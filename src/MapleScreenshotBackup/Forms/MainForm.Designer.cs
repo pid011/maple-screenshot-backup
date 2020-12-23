@@ -1,4 +1,4 @@
-﻿
+
 namespace MapleScreenshotBackup.Forms
 {
     partial class MainForm
