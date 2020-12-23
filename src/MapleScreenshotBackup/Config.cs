@@ -21,7 +21,7 @@ namespace MapleScreenshotBackup
         private static string FilePath => Path.Combine(ProgramDirectoryPath, LeaderboardFileName);
         private static string ProgramDirectoryPath => Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
 
-        private readonly static JsonSerializerOptions s_option = new JsonSerializerOptions { WriteIndented = true };
+        private static readonly JsonSerializerOptions s_option = new JsonSerializerOptions { WriteIndented = true };
 
         /// <summary>
         /// Load config from file.
@@ -46,6 +46,7 @@ namespace MapleScreenshotBackup
         {
             try
             {
+                // TODO: 저장할때 한글이 제대로 저장되도록 수정하기
                 using var fs = File.Open(FilePath, FileMode.Create);
                 await JsonSerializer.SerializeAsync(fs, obj, options: s_option);
                 return true;

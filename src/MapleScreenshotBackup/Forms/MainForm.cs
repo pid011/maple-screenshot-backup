@@ -7,6 +7,7 @@ namespace MapleScreenshotBackup.Forms
     public partial class MainForm : Form
     {
         private BackupDirectories _directoriesConfig;
+        private Backup _backupProcess;
 
         public MainForm()
         {
@@ -119,9 +120,18 @@ namespace MapleScreenshotBackup.Forms
                 {
                     return;
                 }
-                //backupProgressBar.Style = ProgressBarStyle.Blocks;
+                backupProgressBar.Style = ProgressBarStyle.Blocks;
 
-                backupButton.Enabled = true;
+                _backupProcess = new Backup(_directoriesConfig);
+
+                backupProgressBar.Style = ProgressBarStyle.Marquee;
+                backupStatus.Text = "Finding...";
+
+                backupButton.Enabled = await _backupProcess.FindScreenshotsAsync();
+
+                backupProgressBar.Style = ProgressBarStyle.Blocks;
+                backupStatus.Text = $"Screenshots count: {_backupProcess.ScreenshotsPathCache.Count}";
+
             }
             finally
             {
