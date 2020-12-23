@@ -17,8 +17,8 @@ namespace MapleScreenshotBackup
 
     public static class Config
     {
-        public const string LeaderboardFileName = "config.json";
-        private static string FilePath => Path.Combine(ProgramDirectoryPath, LeaderboardFileName);
+        public const string FileName = "config.json";
+        public static string FilePath => Path.Combine(ProgramDirectoryPath, FileName);
         private static string ProgramDirectoryPath => Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
 
         private static readonly JsonSerializerOptions s_option = new JsonSerializerOptions { WriteIndented = true };
