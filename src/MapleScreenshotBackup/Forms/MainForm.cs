@@ -1,12 +1,12 @@
 using System;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 namespace MapleScreenshotBackup.Forms
 {
     public partial class MainForm : Form
     {
+        private readonly Log _log;
         private BackupDirectories _directoriesConfig;
         private Backup _backupProcess;
 
@@ -14,6 +14,7 @@ namespace MapleScreenshotBackup.Forms
         {
             InitializeComponent();
             backupButton.Enabled = false;
+            _log = new Log(backupLog);
         }
 
         private async void OnLoadForm(object sender, EventArgs e)
@@ -123,11 +124,13 @@ namespace MapleScreenshotBackup.Forms
                 }
                 backupProgressBar.Style = ProgressBarStyle.Blocks;
 
-                _backupProcess = new Backup(_directoriesConfig);
-                backupStatus.Text = "Finding...";
-                backupButton.Enabled = await _backupProcess.FindScreenshotsAsync(backupProgressBar);
-                backupStatus.Text = $"Screenshots count: {_backupProcess.ScreenshotsPathCache.Count}";
+                _log.WriteLog($"Screenshot directory: {_directoriesConfig.MapleDirectory}");
+                _log.WriteLog($"Backup directory: {_directoriesConfig.BackupDirectory}");
 
+                _backupProcess = new Backup(_directoriesConfig);
+                _log.WriteLog("Finding...");
+                backupButton.Enabled = await _backupProcess.FindScreenshotsAsync(backupProgressBar);
+                _log.WriteLog($"Screenshots count: {_backupProcess.ScreenshotsPathCache.Count}");
             }
             finally
             {
@@ -137,13 +140,19 @@ namespace MapleScreenshotBackup.Forms
 
         private async void OnBackupButtonClicked(object sender, EventArgs e)
         {
-            var result = await _backupProcess.StartBackupAsync(backupProgressBar, true);
-            var sb = new StringBuilder()
-                .AppendLine("Done.")
-                .AppendLine($"Faild count: {result.Faild.Count}")
-                .AppendLine($"Skip count: {result.Skip.Count}");
+            backupButton.Enabled = false;
 
-            backupStatus.Text = sb.ToString();
+            try
+            {
+                var result = await _backupProcess.StartBackupAsync(backupProgressBar, true);
+                _log.WriteLog("Done.");
+                _log.WriteLog($"Faild count: {result.Faild.Count}");
+                _log.WriteLog($"Skip count: {result.Skip.Count}");
+            }
+            catch (Exception ex)
+            {
+                _log.WriteLog(ex);
+            }
         }
     }
 }

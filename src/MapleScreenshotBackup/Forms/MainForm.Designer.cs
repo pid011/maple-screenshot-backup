@@ -45,10 +45,10 @@ namespace MapleScreenshotBackup.Forms
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.backupLog = new System.Windows.Forms.ListBox();
             this.backupProgressBar = new System.Windows.Forms.ProgressBar();
             this.screenshotsFindButton = new System.Windows.Forms.Button();
             this.backupButton = new System.Windows.Forms.Button();
-            this.backupStatus = new System.Windows.Forms.Label();
             this.backupDirInput = new System.Windows.Forms.TextBox();
             this.backupDirSelectButton = new System.Windows.Forms.Button();
             this.mapleDirInput = new System.Windows.Forms.TextBox();
@@ -157,10 +157,10 @@ namespace MapleScreenshotBackup.Forms
             // 
             // backupPage
             // 
+            backupPage.Controls.Add(this.backupLog);
             backupPage.Controls.Add(this.backupProgressBar);
             backupPage.Controls.Add(this.screenshotsFindButton);
             backupPage.Controls.Add(this.backupButton);
-            backupPage.Controls.Add(this.backupStatus);
             backupPage.Controls.Add(backupDirInputPanel);
             backupPage.Controls.Add(mapleDirInputPanel);
             backupPage.Location = new System.Drawing.Point(4, 24);
@@ -170,6 +170,19 @@ namespace MapleScreenshotBackup.Forms
             backupPage.TabIndex = 0;
             backupPage.Text = "Backup";
             backupPage.UseVisualStyleBackColor = true;
+            // 
+            // backupLog
+            // 
+            this.backupLog.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.backupLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.backupLog.FormattingEnabled = true;
+            this.backupLog.ItemHeight = 15;
+            this.backupLog.Location = new System.Drawing.Point(60, 110);
+            this.backupLog.Name = "backupLog";
+            this.backupLog.ScrollAlwaysVisible = true;
+            this.backupLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.backupLog.Size = new System.Drawing.Size(645, 167);
+            this.backupLog.TabIndex = 4;
             // 
             // backupProgressBar
             // 
@@ -203,17 +216,6 @@ namespace MapleScreenshotBackup.Forms
             this.backupButton.Text = "Backup";
             this.backupButton.UseVisualStyleBackColor = true;
             this.backupButton.Click += new System.EventHandler(this.OnBackupButtonClicked);
-            // 
-            // backupStatus
-            // 
-            this.backupStatus.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.backupStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.backupStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.backupStatus.Location = new System.Drawing.Point(60, 123);
-            this.backupStatus.Name = "backupStatus";
-            this.backupStatus.Size = new System.Drawing.Size(645, 158);
-            this.backupStatus.TabIndex = 1;
-            this.backupStatus.Text = "asdfsadf\r\nsadf\r\nasdfasd\r\nfsdafasdfasdf";
             // 
             // backupDirInputPanel
             // 
@@ -393,9 +395,9 @@ namespace MapleScreenshotBackup.Forms
         private System.Windows.Forms.TextBox backupDirInput;
         private System.Windows.Forms.Button backupDirSelectButton;
         private System.Windows.Forms.TreeView screenshotsTreeView;
-        private System.Windows.Forms.Label backupStatus;
         private System.Windows.Forms.Button backupButton;
         private System.Windows.Forms.ProgressBar backupProgressBar;
         private System.Windows.Forms.Button screenshotsFindButton;
+        private System.Windows.Forms.ListBox backupLog;
     }
 }

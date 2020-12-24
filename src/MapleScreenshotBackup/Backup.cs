@@ -118,6 +118,7 @@ namespace MapleScreenshotBackup
             progress.Maximum = defaultProgress.Maximum;
             progress.Step = defaultProgress.Step;
 
+            throw new Exception("Test exception");
             return result;
 
             static string GetBackupPathFromFileName(string filename)
