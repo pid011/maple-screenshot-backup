@@ -177,6 +177,7 @@ namespace MapleScreenshotBackup.Forms
             this.backupProgressBar.Location = new System.Drawing.Point(60, 285);
             this.backupProgressBar.Name = "backupProgressBar";
             this.backupProgressBar.Size = new System.Drawing.Size(401, 25);
+            this.backupProgressBar.Step = 1;
             this.backupProgressBar.TabIndex = 3;
             // 
             // screenshotsFindButton

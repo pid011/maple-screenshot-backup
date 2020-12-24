@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace MapleScreenshotBackup.Forms
@@ -123,13 +124,8 @@ namespace MapleScreenshotBackup.Forms
                 backupProgressBar.Style = ProgressBarStyle.Blocks;
 
                 _backupProcess = new Backup(_directoriesConfig);
-
-                backupProgressBar.Style = ProgressBarStyle.Marquee;
                 backupStatus.Text = "Finding...";
-
-                backupButton.Enabled = await _backupProcess.FindScreenshotsAsync();
-
-                backupProgressBar.Style = ProgressBarStyle.Blocks;
+                backupButton.Enabled = await _backupProcess.FindScreenshotsAsync(backupProgressBar);
                 backupStatus.Text = $"Screenshots count: {_backupProcess.ScreenshotsPathCache.Count}";
 
             }
@@ -139,9 +135,15 @@ namespace MapleScreenshotBackup.Forms
             }
         }
 
-        private void OnBackupButtonClicked(object sender, EventArgs e)
+        private async void OnBackupButtonClicked(object sender, EventArgs e)
         {
+            var result = await _backupProcess.StartBackupAsync(backupProgressBar, true);
+            var sb = new StringBuilder()
+                .AppendLine("Done.")
+                .AppendLine($"Faild count: {result.Faild.Count}")
+                .AppendLine($"Skip count: {result.Skip.Count}");
 
+            backupStatus.Text = sb.ToString();
         }
     }
 }
