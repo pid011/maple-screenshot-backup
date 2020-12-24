@@ -194,6 +194,7 @@ namespace MapleScreenshotBackup.Forms
                 backupProgressBar.Style = ProgressBarStyle.Blocks;
 
                 _log.WriteLine($"Delete completed files: {canDeleteCheckBox.Checked}");
+                _log.WriteLine("Backup in progress...");
                 var result = await _backupProcess.StartBackupAsync(backupProgressBar, canDeleteCheckBox.Checked);
                 _log.WriteLine("Done.");
                 _log.WriteLine($"Faild count: {result.Faild.Count}");

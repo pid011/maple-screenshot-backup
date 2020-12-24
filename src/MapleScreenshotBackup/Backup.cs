@@ -86,18 +86,18 @@ namespace MapleScreenshotBackup
                         var dirInfo = Directory.CreateDirectory(screenshotDir);
                         var dest = Path.Combine(screenshotDir, filename);
 
+                        var sourceFile = new FileInfo(source);
                         if (File.Exists(dest))
                         {
                             skip.Add(source);
                         }
                         else
                         {
-                            File.Copy(source, dest);
-                        }
-
-                        if (canDelete)
-                        {
-                            File.Delete(source);
+                            _ = sourceFile.CopyTo(dest);
+                            if (canDelete)
+                            {
+                                sourceFile.Delete();
+                            }
                         }
                     }
                     catch (Exception)
