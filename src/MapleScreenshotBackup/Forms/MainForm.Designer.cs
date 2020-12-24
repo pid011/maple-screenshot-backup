@@ -45,6 +45,7 @@ namespace MapleScreenshotBackup.Forms
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.canDeleteCheckBox = new System.Windows.Forms.CheckBox();
             this.backupLog = new System.Windows.Forms.ListBox();
             this.backupProgressBar = new System.Windows.Forms.ProgressBar();
             this.screenshotsFindButton = new System.Windows.Forms.Button();
@@ -157,6 +158,7 @@ namespace MapleScreenshotBackup.Forms
             // 
             // backupPage
             // 
+            backupPage.Controls.Add(this.canDeleteCheckBox);
             backupPage.Controls.Add(this.backupLog);
             backupPage.Controls.Add(this.backupProgressBar);
             backupPage.Controls.Add(this.screenshotsFindButton);
@@ -170,6 +172,17 @@ namespace MapleScreenshotBackup.Forms
             backupPage.TabIndex = 0;
             backupPage.Text = "Backup";
             backupPage.UseVisualStyleBackColor = true;
+            // 
+            // canDeleteCheckBox
+            // 
+            this.canDeleteCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.canDeleteCheckBox.AutoSize = true;
+            this.canDeleteCheckBox.Location = new System.Drawing.Point(60, 317);
+            this.canDeleteCheckBox.Name = "canDeleteCheckBox";
+            this.canDeleteCheckBox.Size = new System.Drawing.Size(143, 19);
+            this.canDeleteCheckBox.TabIndex = 5;
+            this.canDeleteCheckBox.Text = "Delete completed files";
+            this.canDeleteCheckBox.UseVisualStyleBackColor = true;
             // 
             // backupLog
             // 
@@ -374,6 +387,7 @@ namespace MapleScreenshotBackup.Forms
             mainToolStrip.PerformLayout();
             mainTabControl.ResumeLayout(false);
             backupPage.ResumeLayout(false);
+            backupPage.PerformLayout();
             backupDirInputPanel.ResumeLayout(false);
             backupDirInputPanel.PerformLayout();
             mapleDirInputPanel.ResumeLayout(false);
@@ -399,5 +413,6 @@ namespace MapleScreenshotBackup.Forms
         private System.Windows.Forms.ProgressBar backupProgressBar;
         private System.Windows.Forms.Button screenshotsFindButton;
         private System.Windows.Forms.ListBox backupLog;
+        private System.Windows.Forms.CheckBox canDeleteCheckBox;
     }
 }

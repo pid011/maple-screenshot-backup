@@ -31,7 +31,7 @@ namespace MapleScreenshotBackup
             _directories = directories;
         }
 
-        public async Task<bool> FindScreenshotsAsync(ProgressBar progress)
+        public async Task FindScreenshotsAsync(ProgressBar progress)
         {
             progress.Style = ProgressBarStyle.Marquee;
 
@@ -50,10 +50,9 @@ namespace MapleScreenshotBackup
             findTasks.ForEach(t => ScreenshotsPathCache.AddRange(t.Result));
 
             progress.Style = ProgressBarStyle.Blocks;
-            return true;
         }
 
-        public async Task<BackupResult> StartBackupAsync(ProgressBar progress, bool canRemove = false)
+        public async Task<BackupResult> StartBackupAsync(ProgressBar progress, bool canDelete = false)
         {
             var defaultProgress = new
             {
@@ -96,7 +95,7 @@ namespace MapleScreenshotBackup
                             File.Copy(source, dest);
                         }
 
-                        if (canRemove)
+                        if (canDelete)
                         {
                             File.Delete(source);
                         }
@@ -111,7 +110,8 @@ namespace MapleScreenshotBackup
                     }
 
                 }
-                return new BackupResult(true, faild, skip);
+
+                return new BackupResult(faild.Count == 0, faild, skip);
             });
 
             progress.Value = 0;

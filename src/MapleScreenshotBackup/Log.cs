@@ -17,9 +17,19 @@ namespace MapleScreenshotBackup
             _logBox = logBox;
         }
 
-        public void WriteLog<T>(T item)
+        public void WriteLine()
+        {
+            AddLog(string.Empty);
+        }
+
+        public void WriteLine<T>(T item)
         {
             var text = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {item}";
+            AddLog(text);
+        }
+
+        private void AddLog(string text)
+        {
             _logTexts.Enqueue(text);
             _logBox.Items.Add(text);
 

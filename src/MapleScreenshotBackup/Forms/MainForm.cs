@@ -124,21 +124,35 @@ namespace MapleScreenshotBackup.Forms
                 }
                 backupProgressBar.Style = ProgressBarStyle.Blocks;
 
-                _log.WriteLog($"Screenshot directory: {_directoriesConfig.MapleDirectory}");
-                _log.WriteLog($"Backup directory: {_directoriesConfig.BackupDirectory}");
+                _log.WriteLine($"Screenshot directory: {_directoriesConfig.MapleDirectory}");
+                _log.WriteLine($"Backup directory: {_directoriesConfig.BackupDirectory}");
 
                 _backupProcess = new Backup(_directoriesConfig);
-                _log.WriteLog("Finding...");
-                backupButton.Enabled = await _backupProcess.FindScreenshotsAsync(backupProgressBar);
-                _log.WriteLog($"Screenshots count: {_backupProcess.ScreenshotsPathCache.Count}");
+                _log.WriteLine("Finding...");
+
+                await _backupProcess.FindScreenshotsAsync(backupProgressBar);
+
+                var count = _backupProcess.ScreenshotsPathCache.Count;
+                _log.WriteLine($"Screenshots count: {count}");
+                if (count != 0)
+                {
+                    backupButton.Enabled = true;
+                }
+                else
+                {
+                    _log.WriteLine("There are no screenshots to back up.");
+                    backupButton.Enabled = false;
+                }
             }
             catch (Exception ex)
             {
-                _log.WriteLog(ex);
+                _log.WriteLine(ex);
+                backupButton.Enabled = false;
             }
             finally
             {
                 screenshotsFindButton.Enabled = true;
+                _log.WriteLine();
             }
         }
 
@@ -148,14 +162,19 @@ namespace MapleScreenshotBackup.Forms
 
             try
             {
-                var result = await _backupProcess.StartBackupAsync(backupProgressBar, true);
-                _log.WriteLog("Done.");
-                _log.WriteLog($"Faild count: {result.Faild.Count}");
-                _log.WriteLog($"Skip count: {result.Skip.Count}");
+                _log.WriteLine($"Delete completed files: {canDeleteCheckBox.Checked}");
+                var result = await _backupProcess.StartBackupAsync(backupProgressBar, canDeleteCheckBox.Checked);
+                _log.WriteLine("Done.");
+                _log.WriteLine($"Faild count: {result.Faild.Count}");
+                _log.WriteLine($"Skip count: {result.Skip.Count}");
             }
             catch (Exception ex)
             {
-                _log.WriteLog(ex);
+                _log.WriteLine(ex);
+            }
+            finally
+            {
+                _log.WriteLine();
             }
         }
     }
