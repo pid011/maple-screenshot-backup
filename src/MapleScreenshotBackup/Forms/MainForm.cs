@@ -35,7 +35,7 @@ namespace MapleScreenshotBackup.Forms
                 await Config.WriteConfig(_config);
             }
 
-            mapleDirInput.Text = _config.ScreenshotFolder;
+            screenshotDirInput.Text = _config.ScreenshotFolder;
             backupDirInput.Text = _config.BackupFolder;
             canDeleteCheckBox.Checked = _config.CanDelete;
 
@@ -87,9 +87,9 @@ namespace MapleScreenshotBackup.Forms
                     return;
                 }
 
-                if (target.Name == mapleDirSelectButton.Name)
+                if (target.Name == screenshotDirSelectButton.Name)
                 {
-                    mapleDirInput.Text = path;
+                    screenshotDirInput.Text = path;
                 }
 
                 if (target.Name == backupDirSelectButton.Name)
@@ -113,7 +113,7 @@ namespace MapleScreenshotBackup.Forms
 
         private bool InputValueCheck()
         {
-            var ret = Check(mapleDirInput) && Check(backupDirInput);
+            var ret = Check(screenshotDirInput) && Check(backupDirInput);
 
             screenshotsFindButton.Enabled = ret;
             return ret;
@@ -142,7 +142,7 @@ namespace MapleScreenshotBackup.Forms
             screenshotsFindButton.Enabled = false;
             try
             {
-                _config.ScreenshotFolder = mapleDirInput.Text;
+                _config.ScreenshotFolder = screenshotDirInput.Text;
                 _config.BackupFolder = backupDirInput.Text;
                 _config.CanDelete = canDeleteCheckBox.Checked;
 

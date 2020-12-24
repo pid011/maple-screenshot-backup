@@ -34,33 +34,33 @@ namespace MapleScreenshotBackup.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             System.Windows.Forms.TabControl mainTabControl;
             System.Windows.Forms.TabPage backupPage;
+            System.Windows.Forms.TableLayoutPanel screenshotDirInputPanel;
+            System.Windows.Forms.Label label2;
             System.Windows.Forms.TableLayoutPanel backupDirInputPanel;
             System.Windows.Forms.Label label1;
-            System.Windows.Forms.TableLayoutPanel mapleDirInputPanel;
-            System.Windows.Forms.Label label2;
             System.Windows.Forms.TabPage viewerPage;
             System.Windows.Forms.StatusStrip mainStatusStrip;
             System.Windows.Forms.Panel panel1;
             this.screenshotsTreeView = new System.Windows.Forms.TreeView();
             this.exportLogButton = new System.Windows.Forms.ToolStripButton();
             this.newReleaseButton = new System.Windows.Forms.ToolStripButton();
+            this.screenshotDirInput = new System.Windows.Forms.TextBox();
+            this.screenshotDirSelectButton = new System.Windows.Forms.Button();
+            this.backupDirInput = new System.Windows.Forms.TextBox();
+            this.backupDirSelectButton = new System.Windows.Forms.Button();
             this.canDeleteCheckBox = new System.Windows.Forms.CheckBox();
             this.backupLog = new System.Windows.Forms.ListBox();
             this.backupProgressBar = new System.Windows.Forms.ProgressBar();
             this.screenshotsFindButton = new System.Windows.Forms.Button();
             this.backupButton = new System.Windows.Forms.Button();
-            this.backupDirInput = new System.Windows.Forms.TextBox();
-            this.backupDirSelectButton = new System.Windows.Forms.Button();
-            this.mapleDirInput = new System.Windows.Forms.TextBox();
-            this.mapleDirSelectButton = new System.Windows.Forms.Button();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             mainToolStrip = new System.Windows.Forms.ToolStrip();
             mainTabControl = new System.Windows.Forms.TabControl();
             backupPage = new System.Windows.Forms.TabPage();
+            screenshotDirInputPanel = new System.Windows.Forms.TableLayoutPanel();
+            label2 = new System.Windows.Forms.Label();
             backupDirInputPanel = new System.Windows.Forms.TableLayoutPanel();
             label1 = new System.Windows.Forms.Label();
-            mapleDirInputPanel = new System.Windows.Forms.TableLayoutPanel();
-            label2 = new System.Windows.Forms.Label();
             viewerPage = new System.Windows.Forms.TabPage();
             mainStatusStrip = new System.Windows.Forms.StatusStrip();
             panel1 = new System.Windows.Forms.Panel();
@@ -70,8 +70,8 @@ namespace MapleScreenshotBackup.Forms
             mainToolStrip.SuspendLayout();
             mainTabControl.SuspendLayout();
             backupPage.SuspendLayout();
+            screenshotDirInputPanel.SuspendLayout();
             backupDirInputPanel.SuspendLayout();
-            mapleDirInputPanel.SuspendLayout();
             viewerPage.SuspendLayout();
             panel1.SuspendLayout();
             this.SuspendLayout();
@@ -133,7 +133,7 @@ namespace MapleScreenshotBackup.Forms
             this.newReleaseButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newReleaseButton.Name = "newReleaseButton";
             this.newReleaseButton.Size = new System.Drawing.Size(115, 22);
-            this.newReleaseButton.Text = "New release found";
+            this.newReleaseButton.Text = "&New release found";
             // 
             // mainTabControl
             // 
@@ -146,17 +146,17 @@ namespace MapleScreenshotBackup.Forms
             mainTabControl.Name = "mainTabControl";
             mainTabControl.SelectedIndex = 0;
             mainTabControl.Size = new System.Drawing.Size(784, 514);
-            mainTabControl.TabIndex = 1;
+            mainTabControl.TabIndex = 0;
             // 
             // backupPage
             // 
+            backupPage.Controls.Add(screenshotDirInputPanel);
+            backupPage.Controls.Add(backupDirInputPanel);
             backupPage.Controls.Add(this.canDeleteCheckBox);
             backupPage.Controls.Add(this.backupLog);
             backupPage.Controls.Add(this.backupProgressBar);
             backupPage.Controls.Add(this.screenshotsFindButton);
             backupPage.Controls.Add(this.backupButton);
-            backupPage.Controls.Add(backupDirInputPanel);
-            backupPage.Controls.Add(mapleDirInputPanel);
             backupPage.Location = new System.Drawing.Point(4, 24);
             backupPage.Name = "backupPage";
             backupPage.Padding = new System.Windows.Forms.Padding(3);
@@ -165,62 +165,58 @@ namespace MapleScreenshotBackup.Forms
             backupPage.Text = "Backup";
             backupPage.UseVisualStyleBackColor = true;
             // 
-            // canDeleteCheckBox
+            // screenshotDirInputPanel
             // 
-            this.canDeleteCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.canDeleteCheckBox.AutoSize = true;
-            this.canDeleteCheckBox.Location = new System.Drawing.Point(60, 317);
-            this.canDeleteCheckBox.Name = "canDeleteCheckBox";
-            this.canDeleteCheckBox.Size = new System.Drawing.Size(143, 19);
-            this.canDeleteCheckBox.TabIndex = 5;
-            this.canDeleteCheckBox.Text = "Delete completed files";
-            this.canDeleteCheckBox.UseVisualStyleBackColor = true;
+            screenshotDirInputPanel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            screenshotDirInputPanel.ColumnCount = 3;
+            screenshotDirInputPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            screenshotDirInputPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65F));
+            screenshotDirInputPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            screenshotDirInputPanel.Controls.Add(label2, 0, 0);
+            screenshotDirInputPanel.Controls.Add(this.screenshotDirInput, 1, 0);
+            screenshotDirInputPanel.Controls.Add(this.screenshotDirSelectButton, 2, 0);
+            screenshotDirInputPanel.Location = new System.Drawing.Point(60, 18);
+            screenshotDirInputPanel.Name = "screenshotDirInputPanel";
+            screenshotDirInputPanel.RowCount = 1;
+            screenshotDirInputPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            screenshotDirInputPanel.Size = new System.Drawing.Size(645, 27);
+            screenshotDirInputPanel.TabIndex = 0;
             // 
-            // backupLog
+            // label2
             // 
-            this.backupLog.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.backupLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.backupLog.FormattingEnabled = true;
-            this.backupLog.ItemHeight = 15;
-            this.backupLog.Location = new System.Drawing.Point(60, 110);
-            this.backupLog.Name = "backupLog";
-            this.backupLog.ScrollAlwaysVisible = true;
-            this.backupLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.backupLog.Size = new System.Drawing.Size(645, 167);
-            this.backupLog.TabIndex = 4;
+            label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label2.Location = new System.Drawing.Point(0, 0);
+            label2.Margin = new System.Windows.Forms.Padding(0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(129, 27);
+            label2.TabIndex = 0;
+            label2.Text = "Screenshot Folder";
+            label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // backupProgressBar
+            // screenshotDirInput
             // 
-            this.backupProgressBar.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.backupProgressBar.Location = new System.Drawing.Point(60, 285);
-            this.backupProgressBar.Name = "backupProgressBar";
-            this.backupProgressBar.Size = new System.Drawing.Size(401, 25);
-            this.backupProgressBar.Step = 1;
-            this.backupProgressBar.TabIndex = 3;
+            this.screenshotDirInput.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.screenshotDirInput.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystemDirectories;
+            this.screenshotDirInput.BackColor = System.Drawing.SystemColors.Window;
+            this.screenshotDirInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.screenshotDirInput.Location = new System.Drawing.Point(132, 3);
+            this.screenshotDirInput.Name = "screenshotDirInput";
+            this.screenshotDirInput.Size = new System.Drawing.Size(413, 23);
+            this.screenshotDirInput.TabIndex = 0;
+            this.screenshotDirInput.TextChanged += new System.EventHandler(this.DirectoryInputTextChanged);
             // 
-            // screenshotsFindButton
+            // screenshotDirSelectButton
             // 
-            this.screenshotsFindButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.screenshotsFindButton.Enabled = false;
-            this.screenshotsFindButton.Location = new System.Drawing.Point(467, 284);
-            this.screenshotsFindButton.Name = "screenshotsFindButton";
-            this.screenshotsFindButton.Size = new System.Drawing.Size(116, 27);
-            this.screenshotsFindButton.TabIndex = 2;
-            this.screenshotsFindButton.Text = "Find";
-            this.screenshotsFindButton.UseVisualStyleBackColor = true;
-            this.screenshotsFindButton.Click += new System.EventHandler(this.OnFindButtonClicked);
-            // 
-            // backupButton
-            // 
-            this.backupButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.backupButton.Enabled = false;
-            this.backupButton.Location = new System.Drawing.Point(589, 284);
-            this.backupButton.Name = "backupButton";
-            this.backupButton.Size = new System.Drawing.Size(116, 27);
-            this.backupButton.TabIndex = 2;
-            this.backupButton.Text = "Backup";
-            this.backupButton.UseVisualStyleBackColor = true;
-            this.backupButton.Click += new System.EventHandler(this.OnBackupButtonClicked);
+            this.screenshotDirSelectButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.screenshotDirSelectButton.Location = new System.Drawing.Point(550, 2);
+            this.screenshotDirSelectButton.Margin = new System.Windows.Forms.Padding(2);
+            this.screenshotDirSelectButton.Name = "screenshotDirSelectButton";
+            this.screenshotDirSelectButton.Size = new System.Drawing.Size(93, 23);
+            this.screenshotDirSelectButton.TabIndex = 0;
+            this.screenshotDirSelectButton.Text = "Open";
+            this.screenshotDirSelectButton.UseVisualStyleBackColor = true;
+            this.screenshotDirSelectButton.Click += new System.EventHandler(this.OnDirectorySelectButtonClicked);
             // 
             // backupDirInputPanel
             // 
@@ -259,7 +255,7 @@ namespace MapleScreenshotBackup.Forms
             this.backupDirInput.Location = new System.Drawing.Point(132, 3);
             this.backupDirInput.Name = "backupDirInput";
             this.backupDirInput.Size = new System.Drawing.Size(413, 23);
-            this.backupDirInput.TabIndex = 1;
+            this.backupDirInput.TabIndex = 0;
             this.backupDirInput.TextChanged += new System.EventHandler(this.DirectoryInputTextChanged);
             // 
             // backupDirSelectButton
@@ -269,63 +265,68 @@ namespace MapleScreenshotBackup.Forms
             this.backupDirSelectButton.Margin = new System.Windows.Forms.Padding(2);
             this.backupDirSelectButton.Name = "backupDirSelectButton";
             this.backupDirSelectButton.Size = new System.Drawing.Size(93, 23);
-            this.backupDirSelectButton.TabIndex = 2;
+            this.backupDirSelectButton.TabIndex = 0;
             this.backupDirSelectButton.Text = "Open";
             this.backupDirSelectButton.UseVisualStyleBackColor = true;
             this.backupDirSelectButton.Click += new System.EventHandler(this.OnDirectorySelectButtonClicked);
             // 
-            // mapleDirInputPanel
+            // canDeleteCheckBox
             // 
-            mapleDirInputPanel.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            mapleDirInputPanel.ColumnCount = 3;
-            mapleDirInputPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            mapleDirInputPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65F));
-            mapleDirInputPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            mapleDirInputPanel.Controls.Add(label2, 0, 0);
-            mapleDirInputPanel.Controls.Add(this.mapleDirInput, 1, 0);
-            mapleDirInputPanel.Controls.Add(this.mapleDirSelectButton, 2, 0);
-            mapleDirInputPanel.Location = new System.Drawing.Point(60, 18);
-            mapleDirInputPanel.Name = "mapleDirInputPanel";
-            mapleDirInputPanel.RowCount = 1;
-            mapleDirInputPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            mapleDirInputPanel.Size = new System.Drawing.Size(645, 27);
-            mapleDirInputPanel.TabIndex = 0;
+            this.canDeleteCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.canDeleteCheckBox.AutoSize = true;
+            this.canDeleteCheckBox.Location = new System.Drawing.Point(60, 317);
+            this.canDeleteCheckBox.Name = "canDeleteCheckBox";
+            this.canDeleteCheckBox.Size = new System.Drawing.Size(143, 19);
+            this.canDeleteCheckBox.TabIndex = 0;
+            this.canDeleteCheckBox.Text = "Delete completed files";
+            this.canDeleteCheckBox.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // backupLog
             // 
-            label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            label2.Location = new System.Drawing.Point(0, 0);
-            label2.Margin = new System.Windows.Forms.Padding(0);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(129, 27);
-            label2.TabIndex = 0;
-            label2.Text = "Screenshot Folder";
-            label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.backupLog.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.backupLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.backupLog.FormattingEnabled = true;
+            this.backupLog.ItemHeight = 15;
+            this.backupLog.Location = new System.Drawing.Point(60, 110);
+            this.backupLog.Name = "backupLog";
+            this.backupLog.ScrollAlwaysVisible = true;
+            this.backupLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.backupLog.Size = new System.Drawing.Size(645, 167);
+            this.backupLog.TabIndex = 0;
+            this.backupLog.TabStop = false;
             // 
-            // mapleDirInput
+            // backupProgressBar
             // 
-            this.mapleDirInput.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.mapleDirInput.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystemDirectories;
-            this.mapleDirInput.BackColor = System.Drawing.SystemColors.Window;
-            this.mapleDirInput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mapleDirInput.Location = new System.Drawing.Point(132, 3);
-            this.mapleDirInput.Name = "mapleDirInput";
-            this.mapleDirInput.Size = new System.Drawing.Size(413, 23);
-            this.mapleDirInput.TabIndex = 1;
-            this.mapleDirInput.TextChanged += new System.EventHandler(this.DirectoryInputTextChanged);
+            this.backupProgressBar.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.backupProgressBar.Location = new System.Drawing.Point(60, 285);
+            this.backupProgressBar.Name = "backupProgressBar";
+            this.backupProgressBar.Size = new System.Drawing.Size(401, 25);
+            this.backupProgressBar.Step = 1;
+            this.backupProgressBar.TabIndex = 0;
             // 
-            // mapleDirSelectButton
+            // screenshotsFindButton
             // 
-            this.mapleDirSelectButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mapleDirSelectButton.Location = new System.Drawing.Point(550, 2);
-            this.mapleDirSelectButton.Margin = new System.Windows.Forms.Padding(2);
-            this.mapleDirSelectButton.Name = "mapleDirSelectButton";
-            this.mapleDirSelectButton.Size = new System.Drawing.Size(93, 23);
-            this.mapleDirSelectButton.TabIndex = 2;
-            this.mapleDirSelectButton.Text = "Open";
-            this.mapleDirSelectButton.UseVisualStyleBackColor = true;
-            this.mapleDirSelectButton.Click += new System.EventHandler(this.OnDirectorySelectButtonClicked);
+            this.screenshotsFindButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.screenshotsFindButton.Enabled = false;
+            this.screenshotsFindButton.Location = new System.Drawing.Point(467, 284);
+            this.screenshotsFindButton.Name = "screenshotsFindButton";
+            this.screenshotsFindButton.Size = new System.Drawing.Size(116, 27);
+            this.screenshotsFindButton.TabIndex = 0;
+            this.screenshotsFindButton.Text = "Find";
+            this.screenshotsFindButton.UseVisualStyleBackColor = true;
+            this.screenshotsFindButton.Click += new System.EventHandler(this.OnFindButtonClicked);
+            // 
+            // backupButton
+            // 
+            this.backupButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.backupButton.Enabled = false;
+            this.backupButton.Location = new System.Drawing.Point(589, 284);
+            this.backupButton.Name = "backupButton";
+            this.backupButton.Size = new System.Drawing.Size(116, 27);
+            this.backupButton.TabIndex = 0;
+            this.backupButton.Text = "Backup";
+            this.backupButton.UseVisualStyleBackColor = true;
+            this.backupButton.Click += new System.EventHandler(this.OnBackupButtonClicked);
             // 
             // viewerPage
             // 
@@ -334,7 +335,7 @@ namespace MapleScreenshotBackup.Forms
             viewerPage.Name = "viewerPage";
             viewerPage.Padding = new System.Windows.Forms.Padding(3);
             viewerPage.Size = new System.Drawing.Size(776, 486);
-            viewerPage.TabIndex = 1;
+            viewerPage.TabIndex = 0;
             viewerPage.Text = "Viewer";
             viewerPage.UseVisualStyleBackColor = true;
             // 
@@ -345,7 +346,7 @@ namespace MapleScreenshotBackup.Forms
             mainStatusStrip.Name = "mainStatusStrip";
             mainStatusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
             mainStatusStrip.Size = new System.Drawing.Size(784, 22);
-            mainStatusStrip.TabIndex = 2;
+            mainStatusStrip.TabIndex = 0;
             mainStatusStrip.Text = "statusStrip1";
             // 
             // panel1
@@ -357,7 +358,7 @@ namespace MapleScreenshotBackup.Forms
             panel1.Margin = new System.Windows.Forms.Padding(0);
             panel1.Name = "panel1";
             panel1.Size = new System.Drawing.Size(784, 514);
-            panel1.TabIndex = 3;
+            panel1.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -380,10 +381,10 @@ namespace MapleScreenshotBackup.Forms
             mainTabControl.ResumeLayout(false);
             backupPage.ResumeLayout(false);
             backupPage.PerformLayout();
+            screenshotDirInputPanel.ResumeLayout(false);
+            screenshotDirInputPanel.PerformLayout();
             backupDirInputPanel.ResumeLayout(false);
             backupDirInputPanel.PerformLayout();
-            mapleDirInputPanel.ResumeLayout(false);
-            mapleDirInputPanel.PerformLayout();
             viewerPage.ResumeLayout(false);
             panel1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -393,8 +394,8 @@ namespace MapleScreenshotBackup.Forms
 
         #endregion
         private System.Windows.Forms.ToolStripButton exportLogButton;
-        private System.Windows.Forms.TextBox mapleDirInput;
-        private System.Windows.Forms.Button mapleDirSelectButton;
+        private System.Windows.Forms.TextBox screenshotDirInput;
+        private System.Windows.Forms.Button screenshotDirSelectButton;
         private System.Windows.Forms.TextBox backupDirInput;
         private System.Windows.Forms.Button backupDirSelectButton;
         private System.Windows.Forms.TreeView screenshotsTreeView;
