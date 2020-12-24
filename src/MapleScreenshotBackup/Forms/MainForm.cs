@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -13,6 +15,8 @@ namespace MapleScreenshotBackup.Forms
         public MainForm()
         {
             InitializeComponent();
+
+            newReleaseButton.Visible = false;
             backupButton.Enabled = false;
             _log = new Log(backupLog);
         }
@@ -34,6 +38,32 @@ namespace MapleScreenshotBackup.Forms
             mapleDirInput.Text = _config.ScreenshotFolder;
             backupDirInput.Text = _config.BackupFolder;
             canDeleteCheckBox.Checked = _config.CanDelete;
+
+            var update = await GitHubRelease.CompareVersionAsync(Application.ProductVersion);
+            if (update is not null)
+            {
+                var (compare, url) = update.Value;
+
+                newReleaseButton.Visible = !compare;
+                newReleaseButton.Click += (sender, e) =>
+                {
+                    try
+                    {
+                        Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                    }
+                    catch (Win32Exception ex)
+                    {
+                        if (ex.ErrorCode == -2147467259)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                };
+            }
         }
 
         private void OnDirectorySelectButtonClicked(object sender, EventArgs e)

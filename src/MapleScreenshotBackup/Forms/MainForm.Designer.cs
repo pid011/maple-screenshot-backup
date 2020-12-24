@@ -43,6 +43,7 @@ namespace MapleScreenshotBackup.Forms
             System.Windows.Forms.Panel panel1;
             this.screenshotsTreeView = new System.Windows.Forms.TreeView();
             this.exportLogButton = new System.Windows.Forms.ToolStripButton();
+            this.newReleaseButton = new System.Windows.Forms.ToolStripButton();
             this.canDeleteCheckBox = new System.Windows.Forms.CheckBox();
             this.backupLog = new System.Windows.Forms.ListBox();
             this.backupProgressBar = new System.Windows.Forms.ProgressBar();
@@ -105,7 +106,8 @@ namespace MapleScreenshotBackup.Forms
             mainToolStrip.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             mainToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exportLogButton});
+            this.exportLogButton,
+            this.newReleaseButton});
             mainToolStrip.Location = new System.Drawing.Point(0, 0);
             mainToolStrip.Name = "mainToolStrip";
             mainToolStrip.Size = new System.Drawing.Size(784, 25);
@@ -114,13 +116,24 @@ namespace MapleScreenshotBackup.Forms
             // 
             // exportLogButton
             // 
-            this.exportLogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.exportLogButton.Image = ((System.Drawing.Image)(resources.GetObject("exportLogButton.Image")));
             this.exportLogButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.exportLogButton.Name = "exportLogButton";
-            this.exportLogButton.Size = new System.Drawing.Size(23, 22);
+            this.exportLogButton.Size = new System.Drawing.Size(92, 22);
             this.exportLogButton.Text = "&Export Logs";
             this.exportLogButton.Click += new System.EventHandler(this.OnExportLogButtonClicked);
+            // 
+            // newReleaseButton
+            // 
+            this.newReleaseButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.newReleaseButton.BackColor = System.Drawing.SystemColors.Highlight;
+            this.newReleaseButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.newReleaseButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.newReleaseButton.Image = ((System.Drawing.Image)(resources.GetObject("newReleaseButton.Image")));
+            this.newReleaseButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.newReleaseButton.Name = "newReleaseButton";
+            this.newReleaseButton.Size = new System.Drawing.Size(115, 22);
+            this.newReleaseButton.Text = "New release found";
             // 
             // mainTabControl
             // 
@@ -390,5 +403,6 @@ namespace MapleScreenshotBackup.Forms
         private System.Windows.Forms.Button screenshotsFindButton;
         private System.Windows.Forms.ListBox backupLog;
         private System.Windows.Forms.CheckBox canDeleteCheckBox;
+        private System.Windows.Forms.ToolStripButton newReleaseButton;
     }
 }
