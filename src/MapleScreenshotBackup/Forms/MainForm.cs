@@ -132,6 +132,10 @@ namespace MapleScreenshotBackup.Forms
                 backupButton.Enabled = await _backupProcess.FindScreenshotsAsync(backupProgressBar);
                 _log.WriteLog($"Screenshots count: {_backupProcess.ScreenshotsPathCache.Count}");
             }
+            catch (Exception ex)
+            {
+                _log.WriteLog(ex);
+            }
             finally
             {
                 screenshotsFindButton.Enabled = true;
