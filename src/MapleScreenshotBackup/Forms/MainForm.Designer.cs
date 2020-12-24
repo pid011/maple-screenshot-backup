@@ -42,9 +42,7 @@ namespace MapleScreenshotBackup.Forms
             System.Windows.Forms.StatusStrip mainStatusStrip;
             System.Windows.Forms.Panel panel1;
             this.screenshotsTreeView = new System.Windows.Forms.TreeView();
-            this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.exportLogButton = new System.Windows.Forms.ToolStripButton();
             this.canDeleteCheckBox = new System.Windows.Forms.CheckBox();
             this.backupLog = new System.Windows.Forms.ListBox();
             this.backupProgressBar = new System.Windows.Forms.ProgressBar();
@@ -107,41 +105,22 @@ namespace MapleScreenshotBackup.Forms
             mainToolStrip.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             mainToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripButton,
-            this.openToolStripButton,
-            this.saveToolStripButton});
+            this.exportLogButton});
             mainToolStrip.Location = new System.Drawing.Point(0, 0);
             mainToolStrip.Name = "mainToolStrip";
             mainToolStrip.Size = new System.Drawing.Size(784, 25);
             mainToolStrip.TabIndex = 0;
             mainToolStrip.Text = "mainToolStrip";
             // 
-            // newToolStripButton
+            // exportLogButton
             // 
-            this.newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripButton.Image")));
-            this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.newToolStripButton.Name = "newToolStripButton";
-            this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.newToolStripButton.Text = "&New";
-            // 
-            // openToolStripButton
-            // 
-            this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
-            this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.openToolStripButton.Name = "openToolStripButton";
-            this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.openToolStripButton.Text = "&Open";
-            // 
-            // saveToolStripButton
-            // 
-            this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
-            this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.saveToolStripButton.Name = "saveToolStripButton";
-            this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.saveToolStripButton.Text = "&Save";
+            this.exportLogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.exportLogButton.Image = ((System.Drawing.Image)(resources.GetObject("exportLogButton.Image")));
+            this.exportLogButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.exportLogButton.Name = "exportLogButton";
+            this.exportLogButton.Size = new System.Drawing.Size(23, 22);
+            this.exportLogButton.Text = "&Export Logs";
+            this.exportLogButton.Click += new System.EventHandler(this.OnExportLogButtonClicked);
             // 
             // mainTabControl
             // 
@@ -400,10 +379,7 @@ namespace MapleScreenshotBackup.Forms
         }
 
         #endregion
-
-        private System.Windows.Forms.ToolStripButton newToolStripButton;
-        private System.Windows.Forms.ToolStripButton openToolStripButton;
-        private System.Windows.Forms.ToolStripButton saveToolStripButton;
+        private System.Windows.Forms.ToolStripButton exportLogButton;
         private System.Windows.Forms.TextBox mapleDirInput;
         private System.Windows.Forms.Button mapleDirSelectButton;
         private System.Windows.Forms.TextBox backupDirInput;

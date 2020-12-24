@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 
 namespace MapleScreenshotBackup
 {
-    public record BackupDirectories
+    public class BackupDirectories
     {
         [JsonPropertyName("maplestory")]
-        public string MapleDirectory { get; init; }
+        public string MapleDirectory { get; set; }
+
         [JsonPropertyName("backup")]
-        public string BackupDirectory { get; init; }
+        public string BackupDirectory { get; set; }
+
+        [JsonPropertyName("can_delete")]
+        public bool CanDelete { get; set; }
     }
 
     public static class Config
@@ -42,19 +46,11 @@ namespace MapleScreenshotBackup
             }
         }
 
-        public static async Task<bool> WriteConfig(BackupDirectories obj)
+        public static async Task WriteConfig(BackupDirectories obj)
         {
-            try
-            {
-                // TODO: 저장할때 한글이 제대로 저장되도록 수정하기
-                using var fs = File.Open(FilePath, FileMode.Create);
-                await JsonSerializer.SerializeAsync(fs, obj, options: s_option);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            // TODO: 저장할때 한글이 제대로 저장되도록 수정하기
+            using var fs = File.Open(FilePath, FileMode.Create);
+            await JsonSerializer.SerializeAsync(fs, obj, options: s_option);
         }
     }
 }

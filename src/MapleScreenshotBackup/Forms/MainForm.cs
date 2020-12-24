@@ -7,7 +7,7 @@ namespace MapleScreenshotBackup.Forms
     public partial class MainForm : Form
     {
         private readonly Log _log;
-        private BackupDirectories _directoriesConfig;
+        private BackupDirectories _config;
         private Backup _backupProcess;
 
         public MainForm()
@@ -19,19 +19,21 @@ namespace MapleScreenshotBackup.Forms
 
         private async void OnLoadForm(object sender, EventArgs e)
         {
-            _directoriesConfig = await Config.LoadConfig();
-            if (_directoriesConfig == null)
+            _config = await Config.LoadConfig();
+            if (_config == null)
             {
-                _directoriesConfig = new BackupDirectories
+                _config = new BackupDirectories
                 {
+                    MapleDirectory = string.Empty,
                     BackupDirectory = string.Empty,
-                    MapleDirectory = string.Empty
+                    CanDelete = false
                 };
-                await Config.WriteConfig(_directoriesConfig);
+                await Config.WriteConfig(_config);
             }
 
-            mapleDirInput.Text = _directoriesConfig.MapleDirectory;
-            backupDirInput.Text = _directoriesConfig.BackupDirectory;
+            mapleDirInput.Text = _config.MapleDirectory;
+            backupDirInput.Text = _config.BackupDirectory;
+            canDeleteCheckBox.Checked = _config.CanDelete;
         }
 
         private void OnDirectorySelectButtonClicked(object sender, EventArgs e)
@@ -110,24 +112,18 @@ namespace MapleScreenshotBackup.Forms
             screenshotsFindButton.Enabled = false;
             try
             {
-                _directoriesConfig = _directoriesConfig with
-                {
-                    MapleDirectory = mapleDirInput.Text,
-                    BackupDirectory = backupDirInput.Text
-                };
+                _config.MapleDirectory = mapleDirInput.Text;
+                _config.BackupDirectory = backupDirInput.Text;
+                _config.CanDelete = canDeleteCheckBox.Checked;
 
                 backupProgressBar.Style = ProgressBarStyle.Marquee;
-                var ret = await Config.WriteConfig(_directoriesConfig);
-                if (!ret)
-                {
-                    return;
-                }
+                await Config.WriteConfig(_config);
                 backupProgressBar.Style = ProgressBarStyle.Blocks;
 
-                _log.WriteLine($"Screenshot directory: {_directoriesConfig.MapleDirectory}");
-                _log.WriteLine($"Backup directory: {_directoriesConfig.BackupDirectory}");
+                _log.WriteLine($"Screenshot directory: {_config.MapleDirectory}");
+                _log.WriteLine($"Backup directory: {_config.BackupDirectory}");
 
-                _backupProcess = new Backup(_directoriesConfig);
+                _backupProcess = new Backup(_config);
                 _log.WriteLine("Finding...");
 
                 await _backupProcess.FindScreenshotsAsync(backupProgressBar);
@@ -140,7 +136,7 @@ namespace MapleScreenshotBackup.Forms
                 }
                 else
                 {
-                    _log.WriteLine("There are no screenshots to back up.");
+                    _log.WriteLine("There are no screenshots to backup.");
                     backupButton.Enabled = false;
                 }
             }
@@ -162,6 +158,11 @@ namespace MapleScreenshotBackup.Forms
 
             try
             {
+                backupProgressBar.Style = ProgressBarStyle.Marquee;
+                _config.CanDelete = canDeleteCheckBox.Checked;
+                await Config.WriteConfig(_config);
+                backupProgressBar.Style = ProgressBarStyle.Blocks;
+
                 _log.WriteLine($"Delete completed files: {canDeleteCheckBox.Checked}");
                 var result = await _backupProcess.StartBackupAsync(backupProgressBar, canDeleteCheckBox.Checked);
                 _log.WriteLine("Done.");
@@ -175,6 +176,29 @@ namespace MapleScreenshotBackup.Forms
             finally
             {
                 _log.WriteLine();
+            }
+        }
+
+        private async void OnExportLogButtonClicked(object sender, EventArgs e)
+        {
+            exportLogButton.Enabled = false;
+            try
+            {
+                using var dialog = new SaveFileDialog
+                {
+                    Filter = "Log file (*.log)|*.log",
+                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                };
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    await _log.ExportLogAsync(dialog.FileName);
+                    MessageBox.Show("Done.");
+                }
+            }
+            finally
+            {
+                exportLogButton.Enabled = true;
             }
         }
     }
