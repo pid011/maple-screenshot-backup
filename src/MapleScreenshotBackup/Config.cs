@@ -9,11 +9,11 @@ namespace MapleScreenshotBackup
 {
     public class BackupDirectories
     {
-        [JsonPropertyName("maplestory")]
-        public string MapleDirectory { get; set; }
+        [JsonPropertyName("screenshot")]
+        public string ScreenshotFolder { get; set; }
 
         [JsonPropertyName("backup")]
-        public string BackupDirectory { get; set; }
+        public string BackupFolder { get; set; }
 
         [JsonPropertyName("can_delete")]
         public bool CanDelete { get; set; }

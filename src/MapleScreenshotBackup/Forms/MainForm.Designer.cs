@@ -235,7 +235,7 @@ namespace MapleScreenshotBackup.Forms
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(129, 27);
             label1.TabIndex = 0;
-            label1.Text = "Backup Directory";
+            label1.Text = "Backup Folder";
             label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // backupDirInput
@@ -287,7 +287,7 @@ namespace MapleScreenshotBackup.Forms
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(129, 27);
             label2.TabIndex = 0;
-            label2.Text = "MapleStory Directory";
+            label2.Text = "Screenshot Folder";
             label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // mapleDirInput

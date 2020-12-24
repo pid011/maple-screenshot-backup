@@ -24,15 +24,15 @@ namespace MapleScreenshotBackup.Forms
             {
                 _config = new BackupDirectories
                 {
-                    MapleDirectory = string.Empty,
-                    BackupDirectory = string.Empty,
+                    ScreenshotFolder = string.Empty,
+                    BackupFolder = string.Empty,
                     CanDelete = false
                 };
                 await Config.WriteConfig(_config);
             }
 
-            mapleDirInput.Text = _config.MapleDirectory;
-            backupDirInput.Text = _config.BackupDirectory;
+            mapleDirInput.Text = _config.ScreenshotFolder;
+            backupDirInput.Text = _config.BackupFolder;
             canDeleteCheckBox.Checked = _config.CanDelete;
         }
 
@@ -112,16 +112,16 @@ namespace MapleScreenshotBackup.Forms
             screenshotsFindButton.Enabled = false;
             try
             {
-                _config.MapleDirectory = mapleDirInput.Text;
-                _config.BackupDirectory = backupDirInput.Text;
+                _config.ScreenshotFolder = mapleDirInput.Text;
+                _config.BackupFolder = backupDirInput.Text;
                 _config.CanDelete = canDeleteCheckBox.Checked;
 
                 backupProgressBar.Style = ProgressBarStyle.Marquee;
                 await Config.WriteConfig(_config);
                 backupProgressBar.Style = ProgressBarStyle.Blocks;
 
-                _log.WriteLine($"Screenshot directory: {_config.MapleDirectory}");
-                _log.WriteLine($"Backup directory: {_config.BackupDirectory}");
+                _log.WriteLine($"Screenshot folder: {_config.ScreenshotFolder}");
+                _log.WriteLine($"Backup folder: {_config.BackupFolder}");
 
                 _backupProcess = new Backup(_config);
                 _log.WriteLine("Finding...");
