@@ -35,16 +35,16 @@ namespace MapleScreenshotBackup.Forms
                 _log.WriteLine("Creating new config...", hide: true);
                 _config = new ConfigItem
                 {
-                    ScreenshotFolder = string.Empty,
-                    BackupFolder = string.Empty,
+                    ScreenshotDirectory = string.Empty,
+                    BackupDirectory = string.Empty,
                     CanDelete = false
                 };
                 await Config.WriteConfig(_config);
             }
             _log.WriteLine("Config loaded.", hide: true);
 
-            screenshotDirInput.Text = _config.ScreenshotFolder;
-            backupDirInput.Text = _config.BackupFolder;
+            screenshotDirInput.Text = _config.ScreenshotDirectory;
+            backupDirInput.Text = _config.BackupDirectory;
 
             canDeleteCheckBox.Checked = _config.CanDelete;
 
@@ -102,19 +102,19 @@ namespace MapleScreenshotBackup.Forms
 
             if (target.Name == screenshotDirInput.Name)
             {
-                _config.ScreenshotFolder = target.Text;
+                _config.ScreenshotDirectory = target.Text;
             }
 
             if (target.Name == backupDirInput.Name)
             {
-                _config.BackupFolder = target.Text;
+                _config.BackupDirectory = target.Text;
             }
 
-            var screenshotFolderCheck = CheckDirectoryPath(_config.ScreenshotFolder);
-            var backupFolderCheck = CheckDirectoryPath(_config.BackupFolder);
+            var screenshotDirCheck = CheckDirectoryPath(_config.ScreenshotDirectory);
+            var backupDirCheck = CheckDirectoryPath(_config.BackupDirectory);
 
-            openBackupFolderButton.Enabled = backupFolderCheck;
-            screenshotsFindButton.Enabled = screenshotFolderCheck && backupFolderCheck;
+            openBackupDirButton.Enabled = backupDirCheck;
+            screenshotsFindButton.Enabled = screenshotDirCheck && backupDirCheck;
         }
 
         private async void OnFindButtonClicked(object sender, EventArgs e)
@@ -122,16 +122,16 @@ namespace MapleScreenshotBackup.Forms
             screenshotsFindButton.Enabled = false;
             try
             {
-                _config.ScreenshotFolder = screenshotDirInput.Text;
-                _config.BackupFolder = backupDirInput.Text;
+                _config.ScreenshotDirectory = screenshotDirInput.Text;
+                _config.BackupDirectory = backupDirInput.Text;
                 _config.CanDelete = canDeleteCheckBox.Checked;
 
                 backupProgressBar.Style = ProgressBarStyle.Marquee;
                 await Config.WriteConfig(_config);
                 backupProgressBar.Style = ProgressBarStyle.Blocks;
 
-                _log.WriteLine($"Screenshot folder: {_config.ScreenshotFolder}");
-                _log.WriteLine($"Backup folder: {_config.BackupFolder}");
+                _log.WriteLine($"Screenshot directory: {_config.ScreenshotDirectory}");
+                _log.WriteLine($"Backup directory: {_config.BackupDirectory}");
 
                 _backupProcess = new Backup(_config);
                 _log.WriteLine("Finding...");
@@ -215,14 +215,14 @@ namespace MapleScreenshotBackup.Forms
             }
         }
 
-        private void OnOpenBackupFolderButtonClicked(object sender, EventArgs e)
+        private void OnOpenBackupDirButtonClicked(object sender, EventArgs e)
         {
             try
             {
-                if (CheckDirectoryPath(_config.BackupFolder))
+                if (CheckDirectoryPath(_config.BackupDirectory))
                 {
                     _log.WriteLine("Open backup directory.", hide: true);
-                    Process.Start(new ProcessStartInfo("explorer.exe", _config.BackupFolder) { UseShellExecute = true });
+                    Process.Start(new ProcessStartInfo("explorer.exe", _config.BackupDirectory) { UseShellExecute = true });
                 }
             }
             catch (Exception ex)

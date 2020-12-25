@@ -23,7 +23,7 @@ namespace MapleScreenshotBackup
 
         public Backup(ConfigItem directories)
         {
-            if (directories is null || string.IsNullOrWhiteSpace(directories.BackupFolder) || string.IsNullOrWhiteSpace(directories.ScreenshotFolder))
+            if (directories is null || string.IsNullOrWhiteSpace(directories.BackupDirectory) || string.IsNullOrWhiteSpace(directories.ScreenshotDirectory))
             {
                 throw new ArgumentException("Wrong directories.");
             }
@@ -39,7 +39,7 @@ namespace MapleScreenshotBackup
             foreach (var extension in _extensions)
             {
                 var task = Task.Run(() =>
-                    Directory.GetFiles(_directories.ScreenshotFolder, "*" + extension, SearchOption.TopDirectoryOnly));
+                    Directory.GetFiles(_directories.ScreenshotDirectory, "*" + extension, SearchOption.TopDirectoryOnly));
                 findTasks.Add(task);
             }
 
@@ -82,7 +82,7 @@ namespace MapleScreenshotBackup
                             continue;
                         }
 
-                        var screenshotDir = Path.Combine(_directories.BackupFolder, position);
+                        var screenshotDir = Path.Combine(_directories.BackupDirectory, position);
                         var dirInfo = Directory.CreateDirectory(screenshotDir);
                         var dest = Path.Combine(screenshotDir, filename);
 

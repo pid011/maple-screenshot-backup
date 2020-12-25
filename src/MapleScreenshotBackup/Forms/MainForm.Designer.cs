@@ -48,7 +48,7 @@ namespace MapleScreenshotBackup.Forms
             this.githubLink = new System.Windows.Forms.ToolStripStatusLabel();
             this.canDeleteCheckBox = new System.Windows.Forms.CheckBox();
             this.screenshotsFindButton = new System.Windows.Forms.Button();
-            this.openBackupFolderButton = new System.Windows.Forms.Button();
+            this.openBackupDirButton = new System.Windows.Forms.Button();
             this.backupButton = new System.Windows.Forms.Button();
             this.backupLog = new System.Windows.Forms.ListBox();
             this.backupProgressBar = new System.Windows.Forms.ProgressBar();
@@ -260,7 +260,7 @@ namespace MapleScreenshotBackup.Forms
             panel2.Controls.Add(backupDirInputPanel);
             panel2.Controls.Add(this.canDeleteCheckBox);
             panel2.Controls.Add(this.screenshotsFindButton);
-            panel2.Controls.Add(this.openBackupFolderButton);
+            panel2.Controls.Add(this.openBackupDirButton);
             panel2.Controls.Add(this.backupButton);
             panel2.Controls.Add(this.backupLog);
             panel2.Controls.Add(this.backupProgressBar);
@@ -291,15 +291,15 @@ namespace MapleScreenshotBackup.Forms
             this.screenshotsFindButton.UseVisualStyleBackColor = true;
             this.screenshotsFindButton.Click += new System.EventHandler(this.OnFindButtonClicked);
             // 
-            // openBackupFolderButton
+            // openBackupDirButton
             // 
-            this.openBackupFolderButton.Location = new System.Drawing.Point(419, 318);
-            this.openBackupFolderButton.Name = "openBackupFolderButton";
-            this.openBackupFolderButton.Size = new System.Drawing.Size(238, 27);
-            this.openBackupFolderButton.TabIndex = 0;
-            this.openBackupFolderButton.Text = "Open Backup Folder";
-            this.openBackupFolderButton.UseVisualStyleBackColor = true;
-            this.openBackupFolderButton.Click += new System.EventHandler(this.OnOpenBackupFolderButtonClicked);
+            this.openBackupDirButton.Location = new System.Drawing.Point(419, 318);
+            this.openBackupDirButton.Name = "openBackupDirButton";
+            this.openBackupDirButton.Size = new System.Drawing.Size(238, 27);
+            this.openBackupDirButton.TabIndex = 0;
+            this.openBackupDirButton.Text = "Open Backup Folder";
+            this.openBackupDirButton.UseVisualStyleBackColor = true;
+            this.openBackupDirButton.Click += new System.EventHandler(this.OnOpenBackupDirButtonClicked);
             // 
             // backupButton
             // 
@@ -385,7 +385,7 @@ namespace MapleScreenshotBackup.Forms
         private System.Windows.Forms.ToolStripButton newReleaseButton;
         private System.Windows.Forms.ToolStripStatusLabel versionLabel;
         private System.Windows.Forms.ToolStripStatusLabel githubLink;
-        private System.Windows.Forms.Button openBackupFolderButton;
+        private System.Windows.Forms.Button openBackupDirButton;
         private System.Windows.Forms.FolderBrowserDialog dirSelectDialog;
         private System.Windows.Forms.SaveFileDialog saveLogDialog;
     }

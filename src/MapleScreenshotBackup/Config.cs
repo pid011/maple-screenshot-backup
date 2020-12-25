@@ -10,10 +10,10 @@ namespace MapleScreenshotBackup
     public class ConfigItem
     {
         [JsonPropertyName("screenshot")]
-        public string ScreenshotFolder { get; set; }
+        public string ScreenshotDirectory { get; set; }
 
         [JsonPropertyName("backup")]
-        public string BackupFolder { get; set; }
+        public string BackupDirectory { get; set; }
 
         [JsonPropertyName("can_delete")]
         public bool CanDelete { get; set; }
