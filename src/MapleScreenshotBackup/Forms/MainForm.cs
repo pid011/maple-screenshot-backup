@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -16,14 +15,14 @@ namespace MapleScreenshotBackup.Forms
         {
             InitializeComponent();
 
-            newReleaseButton.Visible = false;
-            backupButton.Enabled = false;
             versionLabel.Text = $"Maple Screenshot Backup v{ProductVersion}";
+            newReleaseButton.Visible = false;
             githubLink.Click += (sender, e) =>
             {
                 OpenHyperLink("https://github.com/pid011/maple-screenshot-backup");
             };
 
+            backupButton.Enabled = false;
             _log = new Log(backupLog);
         }
 
@@ -43,6 +42,7 @@ namespace MapleScreenshotBackup.Forms
 
             screenshotDirInput.Text = _config.ScreenshotFolder;
             backupDirInput.Text = _config.BackupFolder;
+
             canDeleteCheckBox.Checked = _config.CanDelete;
 
             var update = await GitHubRelease.CompareVersionAsync(Application.ProductVersion);
@@ -57,26 +57,6 @@ namespace MapleScreenshotBackup.Forms
                 };
             }
         }
-
-        private static void OpenHyperLink(string url)
-        {
-            try
-            {
-                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
-            }
-            catch (Win32Exception ex)
-            {
-                if (ex.ErrorCode == -2147467259)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
         private void OnDirectorySelectButtonClicked(object sender, EventArgs e)
         {
             if (sender is not Button target)
@@ -84,16 +64,11 @@ namespace MapleScreenshotBackup.Forms
                 return;
             }
 
-            using var dialog = new FolderBrowserDialog
+            if (dirSelectDialog.ShowDialog() == DialogResult.OK)
             {
-                RootFolder = Environment.SpecialFolder.MyComputer
-            };
-            var ret = dialog.ShowDialog();
-            if (ret == DialogResult.OK)
-            {
-                var path = dialog.SelectedPath;
+                var path = dirSelectDialog.SelectedPath;
 
-                if (dialog.SelectedPath == string.Empty)
+                if (dirSelectDialog.SelectedPath == string.Empty)
                 {
                     return;
                 }
@@ -107,45 +82,31 @@ namespace MapleScreenshotBackup.Forms
                 {
                     backupDirInput.Text = path;
                 }
-
-                InputValueCheck();
             }
         }
 
         private void DirectoryInputTextChanged(object sender, EventArgs e)
         {
-            if (sender is not TextBox target || string.IsNullOrWhiteSpace(target.Text))
+            if (sender is not TextBox target)
             {
                 return;
             }
 
-            InputValueCheck();
-        }
-
-        private bool InputValueCheck()
-        {
-            var ret = Check(screenshotDirInput) && Check(backupDirInput);
-
-            screenshotsFindButton.Enabled = ret;
-            return ret;
-
-            static bool Check(TextBox target)
+            if (target.Name == screenshotDirInput.Name)
             {
-                if (string.IsNullOrWhiteSpace(target.Text))
-                {
-                    return false;
-                }
-
-                try
-                {
-                    var fullPath = Path.GetFullPath(target.Text);
-                    return Directory.Exists(fullPath);
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                _config.ScreenshotFolder = target.Text;
             }
+
+            if (target.Name == backupDirInput.Name)
+            {
+                _config.BackupFolder = target.Text;
+            }
+
+            var screenshotFolderCheck = CheckDirectoryPath(_config.ScreenshotFolder);
+            var backupFolderCheck = CheckDirectoryPath(_config.BackupFolder);
+
+            openBackupFolderButton.Enabled = backupFolderCheck;
+            screenshotsFindButton.Enabled = screenshotFolderCheck && backupFolderCheck;
         }
 
         private async void OnFindButtonClicked(object sender, EventArgs e)
@@ -226,21 +187,60 @@ namespace MapleScreenshotBackup.Forms
             exportLogButton.Enabled = false;
             try
             {
-                using var dialog = new SaveFileDialog
+                if (saveLogDialog.ShowDialog() == DialogResult.OK)
                 {
-                    Filter = "Log file (*.log)|*.log",
-                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                };
-
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    await _log.ExportLogAsync(dialog.FileName);
+                    await _log.ExportLogAsync(saveLogDialog.FileName);
                     MessageBox.Show("Done.");
                 }
             }
             finally
             {
                 exportLogButton.Enabled = true;
+            }
+        }
+
+        private void OnOpenBackupFolderButtonClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                if (CheckDirectoryPath(_config.BackupFolder))
+                {
+                    Process.Start(new ProcessStartInfo("explorer.exe", _config.BackupFolder) { UseShellExecute = true });
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.WriteLine(ex);
+            }
+        }
+
+        private void OpenHyperLink(string url)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                _log.WriteLine(ex);
+            }
+        }
+
+        private static bool CheckDirectoryPath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return false;
+            }
+
+            try
+            {
+                var fullPath = Path.GetFullPath(path);
+                return Directory.Exists(fullPath);
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }
