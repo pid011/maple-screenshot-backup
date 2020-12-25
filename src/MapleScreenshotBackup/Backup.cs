@@ -19,9 +19,9 @@ namespace MapleScreenshotBackup
             "*.png",
             "*.jpg"
         };
-        private readonly BackupDirectories _directories;
+        private readonly ConfigItem _directories;
 
-        public Backup(BackupDirectories directories)
+        public Backup(ConfigItem directories)
         {
             if (directories is null || string.IsNullOrWhiteSpace(directories.BackupFolder) || string.IsNullOrWhiteSpace(directories.ScreenshotFolder))
             {

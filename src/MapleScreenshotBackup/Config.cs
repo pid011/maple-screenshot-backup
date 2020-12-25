@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MapleScreenshotBackup
 {
-    public class BackupDirectories
+    public class ConfigItem
     {
         [JsonPropertyName("screenshot")]
         public string ScreenshotFolder { get; set; }
@@ -31,12 +31,12 @@ namespace MapleScreenshotBackup
         /// Load config from file.
         /// </summary>
         /// <returns>Return null if config file does not exist or json contents are broken.</returns>
-        public static async Task<BackupDirectories> LoadConfig()
+        public static async Task<ConfigItem> LoadConfig()
         {
             try
             {
                 using var fs = File.OpenRead(FilePath);
-                var obj = await JsonSerializer.DeserializeAsync<BackupDirectories>(fs);
+                var obj = await JsonSerializer.DeserializeAsync<ConfigItem>(fs);
 
                 return obj;
             }
@@ -46,7 +46,7 @@ namespace MapleScreenshotBackup
             }
         }
 
-        public static async Task WriteConfig(BackupDirectories obj)
+        public static async Task WriteConfig(ConfigItem obj)
         {
             // TODO: 저장할때 한글이 제대로 저장되도록 수정하기
             using var fs = File.Open(FilePath, FileMode.Create);

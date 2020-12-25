@@ -9,7 +9,7 @@ namespace MapleScreenshotBackup.Forms
     public partial class MainForm : Form
     {
         private readonly Log _log;
-        private BackupDirectories _config;
+        private ConfigItem _config;
         private Backup _backupProcess;
 
         public MainForm()
@@ -32,7 +32,7 @@ namespace MapleScreenshotBackup.Forms
             _config = await Config.LoadConfig();
             if (_config == null)
             {
-                _config = new BackupDirectories
+                _config = new ConfigItem
                 {
                     ScreenshotFolder = string.Empty,
                     BackupFolder = string.Empty,
