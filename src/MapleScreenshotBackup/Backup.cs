@@ -16,8 +16,8 @@ namespace MapleScreenshotBackup
 
         private readonly string[] _extensions = new string[]
         {
-            "*.png",
-            "*.jpg"
+            ".png",
+            ".jpg"
         };
         private readonly ConfigItem _directories;
 
@@ -39,7 +39,7 @@ namespace MapleScreenshotBackup
             foreach (var extension in _extensions)
             {
                 var task = Task.Run(() =>
-                    Directory.GetFiles(_directories.ScreenshotFolder, extension, SearchOption.TopDirectoryOnly));
+                    Directory.GetFiles(_directories.ScreenshotFolder, "*" + extension, SearchOption.TopDirectoryOnly));
                 findTasks.Add(task);
             }
 
