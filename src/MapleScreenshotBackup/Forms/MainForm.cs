@@ -28,9 +28,11 @@ namespace MapleScreenshotBackup.Forms
 
         private async void OnLoadForm(object sender, EventArgs e)
         {
+            _log.WriteLine("Loading config...", hide: true);
             _config = await Config.LoadConfig();
             if (_config == null)
             {
+                _log.WriteLine("Creating new config...", hide: true);
                 _config = new ConfigItem
                 {
                     ScreenshotFolder = string.Empty,
@@ -39,22 +41,28 @@ namespace MapleScreenshotBackup.Forms
                 };
                 await Config.WriteConfig(_config);
             }
+            _log.WriteLine("Config loaded.", hide: true);
 
             screenshotDirInput.Text = _config.ScreenshotFolder;
             backupDirInput.Text = _config.BackupFolder;
 
             canDeleteCheckBox.Checked = _config.CanDelete;
 
+            _log.WriteLine("Checking program versions...", hide: true);
             var update = await GitHubRelease.CompareVersionAsync(Application.ProductVersion);
             if (update is not null)
             {
                 var (compare, url) = update.Value;
 
-                newReleaseButton.Visible = !compare;
-                newReleaseButton.Click += (sender, e) =>
+                if (!compare)
                 {
-                    OpenHyperLink(url);
-                };
+                    _log.WriteLine("New version founds!");
+                    newReleaseButton.Visible = true;
+                    newReleaseButton.Click += (sender, e) =>
+                    {
+                        OpenHyperLink(url);
+                    };
+                }
             }
         }
         private void OnDirectorySelectButtonClicked(object sender, EventArgs e)
@@ -132,8 +140,10 @@ namespace MapleScreenshotBackup.Forms
 
                 var count = _backupProcess.ScreenshotsPathCache.Count;
                 _log.WriteLine($"Screenshots count: {count}");
+
                 if (count != 0)
                 {
+                    _backupProcess.ScreenshotsPathCache.ForEach(s => _log.WriteLine(s, hide: true));
                     backupButton.Enabled = true;
                 }
                 else
@@ -166,11 +176,16 @@ namespace MapleScreenshotBackup.Forms
                 backupProgressBar.Style = ProgressBarStyle.Blocks;
 
                 _log.WriteLine($"Delete completed files: {canDeleteCheckBox.Checked}");
+
                 _log.WriteLine("Backup in progress...");
                 var result = await _backupProcess.StartBackupAsync(backupProgressBar, canDeleteCheckBox.Checked);
                 _log.WriteLine("Done.");
+
                 _log.WriteLine($"Faild count: {result.Faild.Count}");
+                result.Faild.ForEach(s => _log.WriteLine(s, hide: true));
+
                 _log.WriteLine($"Skip count: {result.Skip.Count}");
+                result.Skip.ForEach(s => _log.WriteLine(s, hide: true));
             }
             catch (Exception ex)
             {
@@ -189,6 +204,7 @@ namespace MapleScreenshotBackup.Forms
             {
                 if (saveLogDialog.ShowDialog() == DialogResult.OK)
                 {
+                    _log.WriteLine("Exporting log...", hide: true);
                     await _log.ExportLogAsync(saveLogDialog.FileName);
                     MessageBox.Show("Done.");
                 }
@@ -205,6 +221,7 @@ namespace MapleScreenshotBackup.Forms
             {
                 if (CheckDirectoryPath(_config.BackupFolder))
                 {
+                    _log.WriteLine("Open backup directory.", hide: true);
                     Process.Start(new ProcessStartInfo("explorer.exe", _config.BackupFolder) { UseShellExecute = true });
                 }
             }
@@ -218,6 +235,7 @@ namespace MapleScreenshotBackup.Forms
         {
             try
             {
+                _log.WriteLine($"Open url [{url}]", hide: true);
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
             catch (Exception ex)

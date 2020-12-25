@@ -19,22 +19,24 @@ namespace MapleScreenshotBackup
 
         public void WriteLine()
         {
-            AddLog(string.Empty);
+            AddLog(string.Empty, true);
         }
 
-        public void WriteLine<T>(T item)
+        public void WriteLine<T>(T item, bool hide = false)
         {
             var text = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {item}";
-            AddLog(text);
+            AddLog(text, hide);
         }
 
-        private void AddLog(string text)
+        private void AddLog(string text, bool hide)
         {
             _logTexts.Enqueue(text);
-            _logBox.Items.Add(text);
-
-            var visibleItems = _logBox.ClientSize.Height / _logBox.ItemHeight;
-            _logBox.TopIndex = Math.Max(_logBox.Items.Count - visibleItems + 1, 0);
+            if (!hide)
+            {
+                _logBox.Items.Add(text);
+                var visibleItems = _logBox.ClientSize.Height / _logBox.ItemHeight;
+                _logBox.TopIndex = Math.Max(_logBox.Items.Count - visibleItems + 1, 0);
+            }
         }
 
         public async Task ExportLogAsync(string path)
