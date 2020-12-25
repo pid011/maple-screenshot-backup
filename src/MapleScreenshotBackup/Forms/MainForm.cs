@@ -18,6 +18,12 @@ namespace MapleScreenshotBackup.Forms
 
             newReleaseButton.Visible = false;
             backupButton.Enabled = false;
+            versionLabel.Text = $"Maple Screenshot Backup v{ProductVersion}";
+            githubLink.Click += (sender, e) =>
+            {
+                OpenHyperLink("https://github.com/pid011/maple-screenshot-backup");
+            };
+
             _log = new Log(backupLog);
         }
 
@@ -47,22 +53,27 @@ namespace MapleScreenshotBackup.Forms
                 newReleaseButton.Visible = !compare;
                 newReleaseButton.Click += (sender, e) =>
                 {
-                    try
-                    {
-                        Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
-                    }
-                    catch (Win32Exception ex)
-                    {
-                        if (ex.ErrorCode == -2147467259)
-                        {
-                            MessageBox.Show(ex.Message);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                    OpenHyperLink(url);
                 };
+            }
+        }
+
+        private static void OpenHyperLink(string url)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            catch (Win32Exception ex)
+            {
+                if (ex.ErrorCode == -2147467259)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 

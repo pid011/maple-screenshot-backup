@@ -29,80 +29,47 @@ namespace MapleScreenshotBackup.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.SplitContainer splitContainer1;
             System.Windows.Forms.ToolStrip mainToolStrip;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TabControl mainTabControl;
-            System.Windows.Forms.TabPage backupPage;
             System.Windows.Forms.TableLayoutPanel screenshotDirInputPanel;
             System.Windows.Forms.Label label2;
             System.Windows.Forms.TableLayoutPanel backupDirInputPanel;
             System.Windows.Forms.Label label1;
-            System.Windows.Forms.TabPage viewerPage;
             System.Windows.Forms.StatusStrip mainStatusStrip;
             System.Windows.Forms.Panel panel1;
-            this.screenshotsTreeView = new System.Windows.Forms.TreeView();
+            System.Windows.Forms.Panel panel2;
             this.exportLogButton = new System.Windows.Forms.ToolStripButton();
             this.newReleaseButton = new System.Windows.Forms.ToolStripButton();
             this.screenshotDirInput = new System.Windows.Forms.TextBox();
             this.screenshotDirSelectButton = new System.Windows.Forms.Button();
             this.backupDirInput = new System.Windows.Forms.TextBox();
             this.backupDirSelectButton = new System.Windows.Forms.Button();
+            this.versionLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.githubLink = new System.Windows.Forms.ToolStripStatusLabel();
             this.canDeleteCheckBox = new System.Windows.Forms.CheckBox();
-            this.backupLog = new System.Windows.Forms.ListBox();
-            this.backupProgressBar = new System.Windows.Forms.ProgressBar();
             this.screenshotsFindButton = new System.Windows.Forms.Button();
             this.backupButton = new System.Windows.Forms.Button();
-            splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.backupLog = new System.Windows.Forms.ListBox();
+            this.backupProgressBar = new System.Windows.Forms.ProgressBar();
             mainToolStrip = new System.Windows.Forms.ToolStrip();
-            mainTabControl = new System.Windows.Forms.TabControl();
-            backupPage = new System.Windows.Forms.TabPage();
             screenshotDirInputPanel = new System.Windows.Forms.TableLayoutPanel();
             label2 = new System.Windows.Forms.Label();
             backupDirInputPanel = new System.Windows.Forms.TableLayoutPanel();
             label1 = new System.Windows.Forms.Label();
-            viewerPage = new System.Windows.Forms.TabPage();
             mainStatusStrip = new System.Windows.Forms.StatusStrip();
             panel1 = new System.Windows.Forms.Panel();
-            ((System.ComponentModel.ISupportInitialize)(splitContainer1)).BeginInit();
-            splitContainer1.Panel1.SuspendLayout();
-            splitContainer1.SuspendLayout();
+            panel2 = new System.Windows.Forms.Panel();
             mainToolStrip.SuspendLayout();
-            mainTabControl.SuspendLayout();
-            backupPage.SuspendLayout();
             screenshotDirInputPanel.SuspendLayout();
             backupDirInputPanel.SuspendLayout();
-            viewerPage.SuspendLayout();
+            mainStatusStrip.SuspendLayout();
             panel1.SuspendLayout();
+            panel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // splitContainer1
-            // 
-            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            splitContainer1.Location = new System.Drawing.Point(3, 3);
-            splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            splitContainer1.Panel1.Controls.Add(this.screenshotsTreeView);
-            splitContainer1.Size = new System.Drawing.Size(770, 480);
-            splitContainer1.SplitterDistance = 223;
-            splitContainer1.TabIndex = 0;
-            // 
-            // screenshotsTreeView
-            // 
-            this.screenshotsTreeView.BackColor = System.Drawing.SystemColors.Control;
-            this.screenshotsTreeView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.screenshotsTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.screenshotsTreeView.Location = new System.Drawing.Point(0, 0);
-            this.screenshotsTreeView.Margin = new System.Windows.Forms.Padding(0);
-            this.screenshotsTreeView.Name = "screenshotsTreeView";
-            this.screenshotsTreeView.Size = new System.Drawing.Size(223, 480);
-            this.screenshotsTreeView.TabIndex = 0;
             // 
             // mainToolStrip
             // 
+            mainToolStrip.BackColor = System.Drawing.SystemColors.Window;
             mainToolStrip.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             mainToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -110,7 +77,8 @@ namespace MapleScreenshotBackup.Forms
             this.newReleaseButton});
             mainToolStrip.Location = new System.Drawing.Point(0, 0);
             mainToolStrip.Name = "mainToolStrip";
-            mainToolStrip.Size = new System.Drawing.Size(784, 25);
+            mainToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            mainToolStrip.Size = new System.Drawing.Size(685, 25);
             mainToolStrip.TabIndex = 0;
             mainToolStrip.Text = "mainToolStrip";
             // 
@@ -135,39 +103,8 @@ namespace MapleScreenshotBackup.Forms
             this.newReleaseButton.Size = new System.Drawing.Size(115, 22);
             this.newReleaseButton.Text = "&New release found";
             // 
-            // mainTabControl
-            // 
-            mainTabControl.Controls.Add(backupPage);
-            mainTabControl.Controls.Add(viewerPage);
-            mainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            mainTabControl.HotTrack = true;
-            mainTabControl.Location = new System.Drawing.Point(0, 0);
-            mainTabControl.Margin = new System.Windows.Forms.Padding(0);
-            mainTabControl.Name = "mainTabControl";
-            mainTabControl.SelectedIndex = 0;
-            mainTabControl.Size = new System.Drawing.Size(784, 514);
-            mainTabControl.TabIndex = 0;
-            // 
-            // backupPage
-            // 
-            backupPage.Controls.Add(screenshotDirInputPanel);
-            backupPage.Controls.Add(backupDirInputPanel);
-            backupPage.Controls.Add(this.canDeleteCheckBox);
-            backupPage.Controls.Add(this.backupLog);
-            backupPage.Controls.Add(this.backupProgressBar);
-            backupPage.Controls.Add(this.screenshotsFindButton);
-            backupPage.Controls.Add(this.backupButton);
-            backupPage.Location = new System.Drawing.Point(4, 24);
-            backupPage.Name = "backupPage";
-            backupPage.Padding = new System.Windows.Forms.Padding(3);
-            backupPage.Size = new System.Drawing.Size(776, 486);
-            backupPage.TabIndex = 0;
-            backupPage.Text = "Backup";
-            backupPage.UseVisualStyleBackColor = true;
-            // 
             // screenshotDirInputPanel
             // 
-            screenshotDirInputPanel.Anchor = System.Windows.Forms.AnchorStyles.Top;
             screenshotDirInputPanel.ColumnCount = 3;
             screenshotDirInputPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             screenshotDirInputPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65F));
@@ -175,7 +112,7 @@ namespace MapleScreenshotBackup.Forms
             screenshotDirInputPanel.Controls.Add(label2, 0, 0);
             screenshotDirInputPanel.Controls.Add(this.screenshotDirInput, 1, 0);
             screenshotDirInputPanel.Controls.Add(this.screenshotDirSelectButton, 2, 0);
-            screenshotDirInputPanel.Location = new System.Drawing.Point(60, 18);
+            screenshotDirInputPanel.Location = new System.Drawing.Point(19, 10);
             screenshotDirInputPanel.Name = "screenshotDirInputPanel";
             screenshotDirInputPanel.RowCount = 1;
             screenshotDirInputPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -220,7 +157,6 @@ namespace MapleScreenshotBackup.Forms
             // 
             // backupDirInputPanel
             // 
-            backupDirInputPanel.Anchor = System.Windows.Forms.AnchorStyles.Top;
             backupDirInputPanel.ColumnCount = 3;
             backupDirInputPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             backupDirInputPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65F));
@@ -228,7 +164,7 @@ namespace MapleScreenshotBackup.Forms
             backupDirInputPanel.Controls.Add(label1, 0, 0);
             backupDirInputPanel.Controls.Add(this.backupDirInput, 1, 0);
             backupDirInputPanel.Controls.Add(this.backupDirSelectButton, 2, 0);
-            backupDirInputPanel.Location = new System.Drawing.Point(60, 51);
+            backupDirInputPanel.Location = new System.Drawing.Point(19, 42);
             backupDirInputPanel.Name = "backupDirInputPanel";
             backupDirInputPanel.RowCount = 1;
             backupDirInputPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -270,45 +206,78 @@ namespace MapleScreenshotBackup.Forms
             this.backupDirSelectButton.UseVisualStyleBackColor = true;
             this.backupDirSelectButton.Click += new System.EventHandler(this.OnDirectorySelectButtonClicked);
             // 
+            // mainStatusStrip
+            // 
+            mainStatusStrip.BackColor = System.Drawing.SystemColors.Window;
+            mainStatusStrip.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            mainStatusStrip.GripMargin = new System.Windows.Forms.Padding(0);
+            mainStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.versionLabel,
+            this.githubLink});
+            mainStatusStrip.Location = new System.Drawing.Point(0, 383);
+            mainStatusStrip.Name = "mainStatusStrip";
+            mainStatusStrip.Size = new System.Drawing.Size(685, 22);
+            mainStatusStrip.SizingGrip = false;
+            mainStatusStrip.TabIndex = 0;
+            mainStatusStrip.Text = "statusStrip1";
+            // 
+            // versionLabel
+            // 
+            this.versionLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.versionLabel.Name = "versionLabel";
+            this.versionLabel.Size = new System.Drawing.Size(146, 17);
+            this.versionLabel.Text = "Maple Screenshot Backup";
+            // 
+            // githubLink
+            // 
+            this.githubLink.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.githubLink.IsLink = true;
+            this.githubLink.LinkColor = System.Drawing.Color.LimeGreen;
+            this.githubLink.Name = "githubLink";
+            this.githubLink.Size = new System.Drawing.Size(45, 17);
+            this.githubLink.Text = "GitHub";
+            // 
+            // panel1
+            // 
+            panel1.BackColor = System.Drawing.SystemColors.Control;
+            panel1.Controls.Add(panel2);
+            panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            panel1.Location = new System.Drawing.Point(0, 25);
+            panel1.Margin = new System.Windows.Forms.Padding(0);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(685, 358);
+            panel1.TabIndex = 0;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = System.Drawing.SystemColors.Control;
+            panel2.Controls.Add(screenshotDirInputPanel);
+            panel2.Controls.Add(backupDirInputPanel);
+            panel2.Controls.Add(this.canDeleteCheckBox);
+            panel2.Controls.Add(this.screenshotsFindButton);
+            panel2.Controls.Add(this.backupButton);
+            panel2.Controls.Add(this.backupLog);
+            panel2.Controls.Add(this.backupProgressBar);
+            panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            panel2.Location = new System.Drawing.Point(0, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new System.Drawing.Size(685, 358);
+            panel2.TabIndex = 1;
+            // 
             // canDeleteCheckBox
             // 
-            this.canDeleteCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.canDeleteCheckBox.AutoSize = true;
-            this.canDeleteCheckBox.Location = new System.Drawing.Point(60, 317);
+            this.canDeleteCheckBox.Location = new System.Drawing.Point(19, 279);
             this.canDeleteCheckBox.Name = "canDeleteCheckBox";
             this.canDeleteCheckBox.Size = new System.Drawing.Size(143, 19);
             this.canDeleteCheckBox.TabIndex = 0;
             this.canDeleteCheckBox.Text = "Delete completed files";
             this.canDeleteCheckBox.UseVisualStyleBackColor = true;
             // 
-            // backupLog
-            // 
-            this.backupLog.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.backupLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.backupLog.FormattingEnabled = true;
-            this.backupLog.ItemHeight = 15;
-            this.backupLog.Location = new System.Drawing.Point(60, 110);
-            this.backupLog.Name = "backupLog";
-            this.backupLog.ScrollAlwaysVisible = true;
-            this.backupLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.backupLog.Size = new System.Drawing.Size(645, 167);
-            this.backupLog.TabIndex = 0;
-            this.backupLog.TabStop = false;
-            // 
-            // backupProgressBar
-            // 
-            this.backupProgressBar.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.backupProgressBar.Location = new System.Drawing.Point(60, 285);
-            this.backupProgressBar.Name = "backupProgressBar";
-            this.backupProgressBar.Size = new System.Drawing.Size(401, 25);
-            this.backupProgressBar.Step = 1;
-            this.backupProgressBar.TabIndex = 0;
-            // 
             // screenshotsFindButton
             // 
-            this.screenshotsFindButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.screenshotsFindButton.Enabled = false;
-            this.screenshotsFindButton.Location = new System.Drawing.Point(467, 284);
+            this.screenshotsFindButton.Location = new System.Drawing.Point(426, 247);
             this.screenshotsFindButton.Name = "screenshotsFindButton";
             this.screenshotsFindButton.Size = new System.Drawing.Size(116, 27);
             this.screenshotsFindButton.TabIndex = 0;
@@ -318,9 +287,8 @@ namespace MapleScreenshotBackup.Forms
             // 
             // backupButton
             // 
-            this.backupButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.backupButton.Enabled = false;
-            this.backupButton.Location = new System.Drawing.Point(589, 284);
+            this.backupButton.Location = new System.Drawing.Point(548, 247);
             this.backupButton.Name = "backupButton";
             this.backupButton.Size = new System.Drawing.Size(116, 27);
             this.backupButton.TabIndex = 0;
@@ -328,65 +296,52 @@ namespace MapleScreenshotBackup.Forms
             this.backupButton.UseVisualStyleBackColor = true;
             this.backupButton.Click += new System.EventHandler(this.OnBackupButtonClicked);
             // 
-            // viewerPage
+            // backupLog
             // 
-            viewerPage.Controls.Add(splitContainer1);
-            viewerPage.Location = new System.Drawing.Point(4, 24);
-            viewerPage.Name = "viewerPage";
-            viewerPage.Padding = new System.Windows.Forms.Padding(3);
-            viewerPage.Size = new System.Drawing.Size(776, 486);
-            viewerPage.TabIndex = 0;
-            viewerPage.Text = "Viewer";
-            viewerPage.UseVisualStyleBackColor = true;
+            this.backupLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.backupLog.FormattingEnabled = true;
+            this.backupLog.ItemHeight = 15;
+            this.backupLog.Location = new System.Drawing.Point(19, 74);
+            this.backupLog.Name = "backupLog";
+            this.backupLog.ScrollAlwaysVisible = true;
+            this.backupLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.backupLog.Size = new System.Drawing.Size(645, 167);
+            this.backupLog.TabIndex = 0;
+            this.backupLog.TabStop = false;
             // 
-            // mainStatusStrip
+            // backupProgressBar
             // 
-            mainStatusStrip.GripMargin = new System.Windows.Forms.Padding(0);
-            mainStatusStrip.Location = new System.Drawing.Point(0, 539);
-            mainStatusStrip.Name = "mainStatusStrip";
-            mainStatusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-            mainStatusStrip.Size = new System.Drawing.Size(784, 22);
-            mainStatusStrip.TabIndex = 0;
-            mainStatusStrip.Text = "statusStrip1";
-            // 
-            // panel1
-            // 
-            panel1.BackColor = System.Drawing.SystemColors.Control;
-            panel1.Controls.Add(mainTabControl);
-            panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel1.Location = new System.Drawing.Point(0, 25);
-            panel1.Margin = new System.Windows.Forms.Padding(0);
-            panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(784, 514);
-            panel1.TabIndex = 0;
+            this.backupProgressBar.Location = new System.Drawing.Point(19, 248);
+            this.backupProgressBar.Name = "backupProgressBar";
+            this.backupProgressBar.Size = new System.Drawing.Size(401, 25);
+            this.backupProgressBar.Step = 1;
+            this.backupProgressBar.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(685, 405);
             this.Controls.Add(panel1);
-            this.Controls.Add(mainStatusStrip);
             this.Controls.Add(mainToolStrip);
+            this.Controls.Add(mainStatusStrip);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.MinimumSize = new System.Drawing.Size(800, 600);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Maple Screenshot Backup";
             this.Load += new System.EventHandler(this.OnLoadForm);
-            splitContainer1.Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(splitContainer1)).EndInit();
-            splitContainer1.ResumeLayout(false);
             mainToolStrip.ResumeLayout(false);
             mainToolStrip.PerformLayout();
-            mainTabControl.ResumeLayout(false);
-            backupPage.ResumeLayout(false);
-            backupPage.PerformLayout();
             screenshotDirInputPanel.ResumeLayout(false);
             screenshotDirInputPanel.PerformLayout();
             backupDirInputPanel.ResumeLayout(false);
             backupDirInputPanel.PerformLayout();
-            viewerPage.ResumeLayout(false);
+            mainStatusStrip.ResumeLayout(false);
+            mainStatusStrip.PerformLayout();
             panel1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -398,12 +353,13 @@ namespace MapleScreenshotBackup.Forms
         private System.Windows.Forms.Button screenshotDirSelectButton;
         private System.Windows.Forms.TextBox backupDirInput;
         private System.Windows.Forms.Button backupDirSelectButton;
-        private System.Windows.Forms.TreeView screenshotsTreeView;
         private System.Windows.Forms.Button backupButton;
         private System.Windows.Forms.ProgressBar backupProgressBar;
         private System.Windows.Forms.Button screenshotsFindButton;
         private System.Windows.Forms.ListBox backupLog;
         private System.Windows.Forms.CheckBox canDeleteCheckBox;
         private System.Windows.Forms.ToolStripButton newReleaseButton;
+        private System.Windows.Forms.ToolStripStatusLabel versionLabel;
+        private System.Windows.Forms.ToolStripStatusLabel githubLink;
     }
 }
