@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using MapleScreenshotBackup.Properties;
 
 namespace MapleScreenshotBackup.Forms
 {
@@ -25,13 +24,17 @@ namespace MapleScreenshotBackup.Forms
             _log = new Log(backupLog);
 
             backupButton.Enabled = false;
-            screenshotDirInput.Text = Settings.Default.ScreenshotDir;
-            backupDirInput.Text = Settings.Default.BackupDir;
-            canDeleteCheckBox.Checked = Settings.Default.CanDelete;
+            screenshotsFindButton.Enabled = false;
+            openBackupDirButton.Enabled = false;
         }
 
         private async void OnLoadForm(object sender, EventArgs e)
         {
+            await Config.LoadAsync();
+            screenshotDirInput.Text = Config.Item.ScreenshotDirectory;
+            backupDirInput.Text = Config.Item.BackupDirectory;
+            canDeleteCheckBox.Checked = Config.Item.CanDelete;
+
             _log.WriteLine("Checking program versions...", hide: true);
             var update = await GitHubRelease.CompareVersionAsync(Application.ProductVersion);
             if (update is not null)
@@ -82,16 +85,16 @@ namespace MapleScreenshotBackup.Forms
 
             if (target.Name == screenshotDirInput.Name)
             {
-                Settings.Default.ScreenshotDir = target.Text;
+                Config.Item.ScreenshotDirectory = target.Text;
             }
 
             if (target.Name == backupDirInput.Name)
             {
-                Settings.Default.BackupDir = target.Text;
+                Config.Item.BackupDirectory = target.Text;
             }
 
-            var screenshotDirCheck = CheckDirectoryPath(Settings.Default.ScreenshotDir);
-            var backupDirCheck = CheckDirectoryPath(Settings.Default.BackupDir);
+            var screenshotDirCheck = CheckDirectoryPath(Config.Item.ScreenshotDirectory);
+            var backupDirCheck = CheckDirectoryPath(Config.Item.BackupDirectory);
 
             openBackupDirButton.Enabled = backupDirCheck;
             screenshotsFindButton.Enabled = screenshotDirCheck && backupDirCheck;
@@ -104,12 +107,12 @@ namespace MapleScreenshotBackup.Forms
 
             try
             {
-                Settings.Default.Save();
+                await Config.SaveAsync();
 
-                _log.WriteLine($"Screenshot directory: {Settings.Default.ScreenshotDir}");
-                _log.WriteLine($"Backup directory: {Settings.Default.BackupDir}");
+                _log.WriteLine($"Screenshot directory: {Config.Item.ScreenshotDirectory}");
+                _log.WriteLine($"Backup directory: {Config.Item.BackupDirectory}");
 
-                _backupProcess = new Backup(Settings.Default.ScreenshotDir, Settings.Default.BackupDir);
+                _backupProcess = new Backup(Config.Item.ScreenshotDirectory, Config.Item.BackupDirectory);
                 _log.WriteLine("Finding...");
 
                 await _backupProcess.FindScreenshotsAsync(backupProgressBar);
@@ -146,9 +149,8 @@ namespace MapleScreenshotBackup.Forms
 
             try
             {
-
-                Settings.Default.CanDelete = canDeleteCheckBox.Checked;
-                Settings.Default.Save();
+                Config.Item.CanDelete = canDeleteCheckBox.Checked;
+                await Config.SaveAsync();
 
                 _log.WriteLine($"Delete completed files: {canDeleteCheckBox.Checked}");
 
@@ -200,7 +202,7 @@ namespace MapleScreenshotBackup.Forms
         {
             try
             {
-                var path = Settings.Default.BackupDir;
+                var path = Config.Item.BackupDirectory;
                 if (CheckDirectoryPath(path))
                 {
                     _log.WriteLine("Open backup directory.", hide: true);
@@ -215,7 +217,7 @@ namespace MapleScreenshotBackup.Forms
 
         private void OnCanDeleteCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            Settings.Default.CanDelete = canDeleteCheckBox.Checked;
+            Config.Item.CanDelete = canDeleteCheckBox.Checked;
         }
 
         private void OpenHyperLink(string url)
