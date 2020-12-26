@@ -5,6 +5,12 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <Version>0.1.1</Version>
+    <Authors>pid011</Authors>
+    <PackageProjectUrl>https://github.com/pid011/maple-screenshot-backup</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/pid011/maple-screenshot-backup</RepositoryUrl>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Copyright>Copyright (c) 2020 pid011</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,6 +37,10 @@
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="..\..\..\kms-guild-extractor\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 
