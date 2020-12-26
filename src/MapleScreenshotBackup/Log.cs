@@ -19,7 +19,7 @@ namespace MapleScreenshotBackup
 
         public void WriteLine()
         {
-            AddLog(string.Empty, true);
+            AddLog(string.Empty, false);
         }
 
         public void WriteLine<T>(T item, bool hide = false)

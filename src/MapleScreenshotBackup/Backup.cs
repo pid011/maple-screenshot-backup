@@ -19,16 +19,24 @@ namespace MapleScreenshotBackup
             ".png",
             ".jpg"
         };
-        private readonly ConfigItem _directories;
 
-        public Backup(ConfigItem directories)
+        private readonly string _screenshotDir;
+        private readonly string _backupDir;
+
+        public Backup(string screenshotDir, string backupDir)
         {
-            if (directories is null || string.IsNullOrWhiteSpace(directories.BackupDirectory) || string.IsNullOrWhiteSpace(directories.ScreenshotDirectory))
+            if (!Directory.Exists(screenshotDir))
             {
-                throw new ArgumentException("Wrong directories.");
+                throw new ArgumentException("Wrong directory.", nameof(screenshotDir));
             }
 
-            _directories = directories;
+            if (!Directory.Exists(backupDir))
+            {
+                throw new ArgumentException("Wrong directory.", nameof(backupDir));
+            }
+
+            _screenshotDir = screenshotDir;
+            _backupDir = backupDir;
         }
 
         public async Task FindScreenshotsAsync(ProgressBar progress)
@@ -39,7 +47,7 @@ namespace MapleScreenshotBackup
             foreach (var extension in _extensions)
             {
                 var task = Task.Run(() =>
-                    Directory.GetFiles(_directories.ScreenshotDirectory, "*" + extension, SearchOption.TopDirectoryOnly));
+                    Directory.GetFiles(_screenshotDir, "*" + extension, SearchOption.TopDirectoryOnly));
                 findTasks.Add(task);
             }
 
@@ -65,60 +73,69 @@ namespace MapleScreenshotBackup
             progress.Maximum = ScreenshotsPathCache.Count;
             progress.Step = 1;
 
-            var result = await Task.Run(() =>
-            {
-                var faild = new List<string>();
-                var skip = new List<string>();
-
-                foreach (var source in ScreenshotsPathCache)
-                {
-                    try
-                    {
-                        var filename = Path.GetFileName(source);
-                        var position = GetBackupPathFromFileName(filename);
-                        if (position == null)
-                        {
-                            faild.Add(source);
-                            continue;
-                        }
-
-                        var screenshotDir = Path.Combine(_directories.BackupDirectory, position);
-                        var dirInfo = Directory.CreateDirectory(screenshotDir);
-                        var dest = Path.Combine(screenshotDir, filename);
-
-                        var sourceFile = new FileInfo(source);
-                        if (File.Exists(dest))
-                        {
-                            skip.Add(source);
-                        }
-                        else
-                        {
-                            _ = sourceFile.CopyTo(dest);
-                            if (canDelete)
-                            {
-                                sourceFile.Delete();
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        faild.Add(source);
-                    }
-                    finally
-                    {
-                        progress.BeginInvoke(new Action(() => progress.PerformStep()));
-                    }
-
-                }
-
-                return new BackupResult(faild.Count == 0, faild, skip);
-            });
+            var result = await Task.Run(() => ProcessBackup(progress, canDelete));
 
             progress.Value = 0;
             progress.Maximum = defaultProgress.Maximum;
             progress.Step = defaultProgress.Step;
 
             return result;
+        }
+
+        private BackupResult ProcessBackup(ProgressBar progress, bool canDelete)
+        {
+            var faild = new List<string>();
+            var skip = new List<string>();
+
+            foreach (var source in ScreenshotsPathCache)
+            {
+                try
+                {
+                    var filename = Path.GetFileName(source);
+                    var position = GetBackupPathFromFileName(filename);
+                    if (position == null)
+                    {
+                        faild.Add(source);
+                        continue;
+                    }
+
+                    var screenshotDir = Path.Combine(_backupDir, position);
+                    var dirInfo = Directory.CreateDirectory(screenshotDir);
+                    var dest = Path.Combine(screenshotDir, filename);
+
+                    var canCopy = true;
+
+                    var sourceFile = new FileInfo(source);
+                    if (File.Exists(dest))
+                    {
+                        var destFile = new FileInfo(dest);
+                        if (sourceFile.Length != destFile.Length)
+                        {
+                            skip.Add(source);
+                            canCopy = false;
+                        }
+                    }
+
+                    if (canCopy)
+                    {
+                        sourceFile.CopyTo(dest, overwrite: true);
+                        if (canDelete)
+                        {
+                            sourceFile.Delete();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    faild.Add(source);
+                }
+                finally
+                {
+                    progress.BeginInvoke(new Action(() => progress.PerformStep()));
+                }
+            }
+
+            return new BackupResult(faild.Count == 0, faild, skip);
 
             static string GetBackupPathFromFileName(string filename)
             {

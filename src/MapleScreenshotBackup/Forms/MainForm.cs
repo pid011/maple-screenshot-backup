@@ -2,13 +2,13 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using MapleScreenshotBackup.Properties;
 
 namespace MapleScreenshotBackup.Forms
 {
     public partial class MainForm : Form
     {
         private readonly Log _log;
-        private ConfigItem _config;
         private Backup _backupProcess;
 
         public MainForm()
@@ -22,32 +22,16 @@ namespace MapleScreenshotBackup.Forms
                 OpenHyperLink("https://github.com/pid011/maple-screenshot-backup");
             };
 
-            backupButton.Enabled = false;
             _log = new Log(backupLog);
+
+            backupButton.Enabled = false;
+            screenshotDirInput.Text = Settings.Default.ScreenshotDir;
+            backupDirInput.Text = Settings.Default.BackupDir;
+            canDeleteCheckBox.Checked = Settings.Default.CanDelete;
         }
 
         private async void OnLoadForm(object sender, EventArgs e)
         {
-            _log.WriteLine("Loading config...", hide: true);
-            _config = await Config.LoadConfig();
-            if (_config == null)
-            {
-                _log.WriteLine("Creating new config...", hide: true);
-                _config = new ConfigItem
-                {
-                    ScreenshotDirectory = string.Empty,
-                    BackupDirectory = string.Empty,
-                    CanDelete = false
-                };
-                await Config.WriteConfig(_config);
-            }
-            _log.WriteLine("Config loaded.", hide: true);
-
-            screenshotDirInput.Text = _config.ScreenshotDirectory;
-            backupDirInput.Text = _config.BackupDirectory;
-
-            canDeleteCheckBox.Checked = _config.CanDelete;
-
             _log.WriteLine("Checking program versions...", hide: true);
             var update = await GitHubRelease.CompareVersionAsync(Application.ProductVersion);
             if (update is not null)
@@ -76,11 +60,6 @@ namespace MapleScreenshotBackup.Forms
             {
                 var path = dirSelectDialog.SelectedPath;
 
-                if (dirSelectDialog.SelectedPath == string.Empty)
-                {
-                    return;
-                }
-
                 if (target.Name == screenshotDirSelectButton.Name)
                 {
                     screenshotDirInput.Text = path;
@@ -102,38 +81,34 @@ namespace MapleScreenshotBackup.Forms
 
             if (target.Name == screenshotDirInput.Name)
             {
-                _config.ScreenshotDirectory = target.Text;
+                Settings.Default.ScreenshotDir = target.Text;
             }
 
             if (target.Name == backupDirInput.Name)
             {
-                _config.BackupDirectory = target.Text;
+                Settings.Default.BackupDir = target.Text;
             }
 
-            var screenshotDirCheck = CheckDirectoryPath(_config.ScreenshotDirectory);
-            var backupDirCheck = CheckDirectoryPath(_config.BackupDirectory);
+            var screenshotDirCheck = CheckDirectoryPath(Settings.Default.ScreenshotDir);
+            var backupDirCheck = CheckDirectoryPath(Settings.Default.BackupDir);
 
             openBackupDirButton.Enabled = backupDirCheck;
             screenshotsFindButton.Enabled = screenshotDirCheck && backupDirCheck;
+            backupButton.Enabled = false;
         }
 
         private async void OnFindButtonClicked(object sender, EventArgs e)
         {
             screenshotsFindButton.Enabled = false;
+
             try
             {
-                _config.ScreenshotDirectory = screenshotDirInput.Text;
-                _config.BackupDirectory = backupDirInput.Text;
-                _config.CanDelete = canDeleteCheckBox.Checked;
+                Settings.Default.Save();
 
-                backupProgressBar.Style = ProgressBarStyle.Marquee;
-                await Config.WriteConfig(_config);
-                backupProgressBar.Style = ProgressBarStyle.Blocks;
+                _log.WriteLine($"Screenshot directory: {Settings.Default.ScreenshotDir}");
+                _log.WriteLine($"Backup directory: {Settings.Default.BackupDir}");
 
-                _log.WriteLine($"Screenshot directory: {_config.ScreenshotDirectory}");
-                _log.WriteLine($"Backup directory: {_config.BackupDirectory}");
-
-                _backupProcess = new Backup(_config);
+                _backupProcess = new Backup(Settings.Default.ScreenshotDir, Settings.Default.BackupDir);
                 _log.WriteLine("Finding...");
 
                 await _backupProcess.FindScreenshotsAsync(backupProgressBar);
@@ -170,10 +145,9 @@ namespace MapleScreenshotBackup.Forms
 
             try
             {
-                backupProgressBar.Style = ProgressBarStyle.Marquee;
-                _config.CanDelete = canDeleteCheckBox.Checked;
-                await Config.WriteConfig(_config);
-                backupProgressBar.Style = ProgressBarStyle.Blocks;
+
+                Settings.Default.CanDelete = canDeleteCheckBox.Checked;
+                Settings.Default.Save();
 
                 _log.WriteLine($"Delete completed files: {canDeleteCheckBox.Checked}");
 
@@ -219,10 +193,11 @@ namespace MapleScreenshotBackup.Forms
         {
             try
             {
-                if (CheckDirectoryPath(_config.BackupDirectory))
+                var path = Settings.Default.BackupDir;
+                if (CheckDirectoryPath(path))
                 {
                     _log.WriteLine("Open backup directory.", hide: true);
-                    Process.Start(new ProcessStartInfo("explorer.exe", _config.BackupDirectory) { UseShellExecute = true });
+                    Process.Start(new ProcessStartInfo("explorer.exe", path) { UseShellExecute = true });
                 }
             }
             catch (Exception ex)
