@@ -17,6 +17,7 @@
     <NeutralLanguage>en</NeutralLanguage>
     <Copyright>Copyright (c) 2020 pid011</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
