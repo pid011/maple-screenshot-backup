@@ -93,6 +93,9 @@
   <metadata name="panel2.GenerateMember" type="System.Boolean, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
     <value>False</value>
   </metadata>
+  <metadata name="panel2.GenerateMember" type="System.Boolean, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
+    <value>False</value>
+  </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAYAAAAAAAEAIAABKAAAZgAAAICAAAABACAAKAgBAGcoAABAQAAAAQAgAChCAACPMAEAMDAAAAEA

@@ -242,6 +242,7 @@ namespace MapleScreenshotBackup.Forms
             this.canDeleteCheckBox.TabIndex = 0;
             this.canDeleteCheckBox.Text = "Delete completed files";
             this.canDeleteCheckBox.UseVisualStyleBackColor = true;
+            this.canDeleteCheckBox.CheckedChanged += new System.EventHandler(this.OnCanDeleteCheckBoxCheckedChanged);
             // 
             // screenshotsFindButton
             // 

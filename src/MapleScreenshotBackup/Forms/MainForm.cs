@@ -49,6 +49,7 @@ namespace MapleScreenshotBackup.Forms
                 }
             }
         }
+
         private void OnDirectorySelectButtonClicked(object sender, EventArgs e)
         {
             if (sender is not Button target)
@@ -210,6 +211,11 @@ namespace MapleScreenshotBackup.Forms
             {
                 _log.WriteLine(ex);
             }
+        }
+
+        private void OnCanDeleteCheckBoxCheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.CanDelete = canDeleteCheckBox.Checked;
         }
 
         private void OpenHyperLink(string url)
