@@ -181,7 +181,13 @@ namespace MapleScreenshotBackup.Forms
                     _log.WriteLine("Exporting log...", hide: true);
                     await _log.ExportLogAsync(saveLogDialog.FileName);
                     MessageBox.Show("Done.");
+
+                    Process.Start("explorer.exe", $"/select,{saveLogDialog.FileName}");
                 }
+            }
+            catch (Exception ex)
+            {
+                _log.WriteLine(ex);
             }
             finally
             {
@@ -197,7 +203,7 @@ namespace MapleScreenshotBackup.Forms
                 if (CheckDirectoryPath(path))
                 {
                     _log.WriteLine("Open backup directory.", hide: true);
-                    Process.Start(new ProcessStartInfo("explorer.exe", path) { UseShellExecute = true });
+                    Process.Start("explorer.exe", path);
                 }
             }
             catch (Exception ex)
