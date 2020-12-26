@@ -29,10 +29,6 @@ namespace MapleScreenshotBackup
         private static readonly JsonSerializerOptions s_option = new JsonSerializerOptions { WriteIndented = true };
         private static readonly AsyncLock s_lock = new AsyncLock();
 
-        /// <summary>
-        /// Load config from file.
-        /// </summary>
-        /// <returns>Return null if config file does not exist or json contents are broken.</returns>
         public static async Task LoadAsync()
         {
             ConfigItem item = null;
@@ -50,16 +46,18 @@ namespace MapleScreenshotBackup
 
             if (item is null)
             {
-                item = new ConfigItem
+                Item = new ConfigItem
                 {
                     ScreenshotDirectory = string.Empty,
                     BackupDirectory = string.Empty,
                     CanDelete = true
-                };
+                }; ;
                 await SaveAsync();
             }
-
-            Item = item;
+            else
+            {
+                Item = item;
+            }
         }
 
         public static async Task SaveAsync()
