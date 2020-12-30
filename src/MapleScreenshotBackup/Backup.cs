@@ -112,6 +112,9 @@ namespace MapleScreenshotBackup
                     if (File.Exists(dest))
                     {
                         var destFile = new FileInfo(dest);
+
+                        // Do not copy if file name is already exist but file size is diffrent
+                        // (Not same file)
                         if (sourceFile.Length != destFile.Length)
                         {
                             skip.Add(source);
@@ -121,6 +124,7 @@ namespace MapleScreenshotBackup
 
                     if (canCopy)
                     {
+                        // Overwriting file
                         sourceFile.CopyTo(dest, overwrite: true);
                         if (canDelete)
                         {
