@@ -51,7 +51,7 @@ namespace MapleScreenshotBackup
                 var files = new List<string>();
                 foreach (var ext in _extensions)
                 {
-                    files.AddRange(Directory.GetFiles(_screenshotDir, "*" + ext, SearchOption.AllDirectories));
+                    files.AddRange(Directory.GetFiles(_screenshotDir, "*" + ext, SearchOption.TopDirectoryOnly));
                 }
 
                 var result = new List<(string source, string dest)>(files.Count);
@@ -137,7 +137,7 @@ namespace MapleScreenshotBackup
                     }
 
                     var screenshotDir = Path.GetDirectoryName(dest);
-                    _ = Directory.CreateDirectory(screenshotDir);
+                    Directory.CreateDirectory(screenshotDir);
 
                     var sourceFile = new FileInfo(source);
                     if (File.Exists(dest))
