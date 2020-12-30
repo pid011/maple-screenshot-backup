@@ -62,12 +62,11 @@ namespace MapleScreenshotBackup
 
         public static async Task SaveAsync()
         {
+            using var disposer = await s_lock.LockAsync();
+
             // TODO: 저장할때 한글이 제대로 저장되도록 수정하기
-            using (await s_lock.LockAsync())
-            {
-                using var fs = File.Open(FilePath, FileMode.Create);
-                await JsonSerializer.SerializeAsync(fs, Item, options: s_option);
-            }
+            using var fs = File.Open(FilePath, FileMode.Create);
+            await JsonSerializer.SerializeAsync(fs, Item, options: s_option);
         }
     }
 }

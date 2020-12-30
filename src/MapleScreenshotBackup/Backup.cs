@@ -20,6 +20,7 @@ namespace MapleScreenshotBackup
             ".jpg"
         };
 
+        private static readonly AsyncLock s_lock = new AsyncLock();
         private readonly string _screenshotDir;
         private readonly string _backupDir;
 
@@ -41,8 +42,9 @@ namespace MapleScreenshotBackup
 
         public async Task FindScreenshotsAsync(ProgressBar progress)
         {
-            progress.Style = ProgressBarStyle.Marquee;
+            using var disposer = await s_lock.LockAsync();
 
+            progress.Style = ProgressBarStyle.Marquee;
             var findTasks = new List<Task<string[]>>(_extensions.Length);
             foreach (var extension in _extensions)
             {
@@ -56,12 +58,13 @@ namespace MapleScreenshotBackup
             var capacity = findTasks.Sum(t => t.Result.Length) + 1;
             ScreenshotsPathCache = new List<string>(capacity);
             findTasks.ForEach(t => ScreenshotsPathCache.AddRange(t.Result));
-
             progress.Style = ProgressBarStyle.Blocks;
         }
 
         public async Task<BackupResult> StartBackupAsync(ProgressBar progress, bool canDelete = false)
         {
+            using var disposer = await s_lock.LockAsync();
+
             var defaultProgress = new
             {
                 progress.Maximum,
