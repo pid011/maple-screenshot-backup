@@ -21,7 +21,13 @@ namespace MapleScreenshotBackup
         private const string LatestReleaseLink = "https://api.github.com/repos/pid011/maple-screenshot-backup/releases/latest";
         private static readonly HttpClient s_client = new HttpClient();
 
-        public static async Task<(bool compare, string url)?> CompareVersionAsync(string target, CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Compare version
+        /// </summary>
+        /// <param name="target">Version string to compare. e.g. [1.0.0]</param>
+        /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
+        /// <returns>Return null if cannot find github release. Or return true if target version is same or greater than github release version.</returns>
+        public static async Task<(bool compare, ReleaseData release)?> CompareVersionAsync(string target, CancellationToken cancellationToken = default)
         {
             if (target is null)
             {
@@ -34,7 +40,8 @@ namespace MapleScreenshotBackup
             {
                 return null;
             }
-            return (versionString == data.TagName, data.Url);
+
+            return (versionString.CompareTo(data.TagName) >= 0, data);
         }
 
         private static async Task<ReleaseData> GetLastReleaseAsync(CancellationToken cancellationToken = default)

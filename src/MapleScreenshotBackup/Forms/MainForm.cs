@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MapleScreenshotBackup.Forms
@@ -36,21 +37,7 @@ namespace MapleScreenshotBackup.Forms
             canDeleteCheckBox.Checked = Config.Item.CanDelete;
 
             _log.WriteLine("Checking program versions...", hide: true);
-            var update = await GitHubRelease.CompareVersionAsync(Application.ProductVersion);
-            if (update is not null)
-            {
-                var (compare, url) = update.Value;
-
-                if (!compare)
-                {
-                    _log.WriteLine("New version founds!");
-                    newReleaseButton.Visible = true;
-                    newReleaseButton.Click += (sender, e) =>
-                    {
-                        OpenHyperLink(url);
-                    };
-                }
-            }
+            await CheckVersion();
         }
 
         private void OnDirectorySelectButtonClicked(object sender, EventArgs e)
@@ -218,6 +205,29 @@ namespace MapleScreenshotBackup.Forms
         private void OnCanDeleteCheckBoxCheckedChanged(object sender, EventArgs e)
         {
             Config.Item.CanDelete = canDeleteCheckBox.Checked;
+        }
+
+        private async Task CheckVersion()
+        {
+            var version = Application.ProductVersion;
+            var update = await GitHubRelease.CompareVersionAsync(version);
+            if (update is not null)
+            {
+                var (compare, release) = update.Value;
+
+                if (!compare)
+                {
+                    _log.WriteLine($"New release found! [v{version} -> {release.TagName}]");
+
+                    newReleaseButton.Text = release.TagName;
+                    newReleaseButton.ToolTipText = release.Url;
+                    newReleaseButton.Visible = true;
+                    newReleaseButton.Click += (sender, e) =>
+                    {
+                        OpenHyperLink(release.Url);
+                    };
+                }
+            }
         }
 
         private void OpenHyperLink(string url)
