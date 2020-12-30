@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MapleScreenshotBackup
 {
-    public record BackupResult(bool Success, List<string> Faild, List<string> Skip);
 
     public class Backup
     {
-        public List<string> ScreenshotsPathCache { get; private set; }
+        public record Result(bool Success, List<BackupException> Faild);
+
+        public List<(string source, string dest)> ScreenshotsPathCache { get; private set; }
 
         private readonly string[] _extensions = new string[]
         {
@@ -45,104 +45,38 @@ namespace MapleScreenshotBackup
             using var disposer = await s_lock.LockAsync();
 
             progress.Style = ProgressBarStyle.Marquee;
-            var findTasks = new List<Task<string[]>>(_extensions.Length);
-            foreach (var extension in _extensions)
+
+            ScreenshotsPathCache = await Task.Run(() =>
             {
-                var task = Task.Run(() =>
-                    Directory.GetFiles(_screenshotDir, "*" + extension, SearchOption.TopDirectoryOnly));
-                findTasks.Add(task);
-            }
+                var files = new List<string>();
+                foreach (var ext in _extensions)
+                {
+                    files.AddRange(Directory.GetFiles(_screenshotDir, "*" + ext, SearchOption.AllDirectories));
+                }
 
-            await Task.WhenAll(findTasks);
+                var result = new List<(string source, string dest)>(files.Count);
 
-            var capacity = findTasks.Sum(t => t.Result.Length) + 1;
-            ScreenshotsPathCache = new List<string>(capacity);
-            findTasks.ForEach(t => ScreenshotsPathCache.AddRange(t.Result));
-            progress.Style = ProgressBarStyle.Blocks;
-        }
-
-        public async Task<BackupResult> StartBackupAsync(ProgressBar progress, bool canDelete = false)
-        {
-            using var disposer = await s_lock.LockAsync();
-
-            var defaultProgress = new
-            {
-                progress.Maximum,
-                progress.Step
-            };
-
-            progress.Style = ProgressBarStyle.Blocks;
-            progress.Value = 0;
-            progress.Maximum = ScreenshotsPathCache.Count;
-            progress.Step = 1;
-
-            var result = await Task.Run(() => ProcessBackup(progress, canDelete));
-
-            progress.Value = 0;
-            progress.Maximum = defaultProgress.Maximum;
-            progress.Step = defaultProgress.Step;
-
-            return result;
-        }
-
-        private BackupResult ProcessBackup(ProgressBar progress, bool canDelete)
-        {
-            var faild = new List<string>();
-            var skip = new List<string>();
-
-            foreach (var source in ScreenshotsPathCache)
-            {
-                try
+                foreach (var source in files)
                 {
                     var filename = Path.GetFileName(source);
                     var position = GetBackupPathFromFileName(filename);
                     if (position == null)
                     {
-                        faild.Add(source);
                         continue;
                     }
 
                     var screenshotDir = Path.Combine(_backupDir, position);
-                    var dirInfo = Directory.CreateDirectory(screenshotDir);
                     var dest = Path.Combine(screenshotDir, filename);
 
-                    var canCopy = true;
-
-                    var sourceFile = new FileInfo(source);
-                    if (File.Exists(dest))
-                    {
-                        var destFile = new FileInfo(dest);
-
-                        // Do not copy if file name is already exist but file size is diffrent
-                        // (Not same file)
-                        if (sourceFile.Length != destFile.Length)
-                        {
-                            skip.Add(source);
-                            canCopy = false;
-                        }
-                    }
-
-                    if (canCopy)
-                    {
-                        // Overwriting file
-                        sourceFile.CopyTo(dest, overwrite: true);
-                        if (canDelete)
-                        {
-                            sourceFile.Delete();
-                        }
-                    }
+                    result.Add((source, dest));
                 }
-                catch (Exception)
-                {
-                    faild.Add(source);
-                }
-                finally
-                {
-                    progress.BeginInvoke(new Action(() => progress.PerformStep()));
-                }
-            }
 
-            return new BackupResult(faild.Count == 0, faild, skip);
+                result.TrimExcess();
+
+                return result;
+            });
+
+            progress.Style = ProgressBarStyle.Blocks;
 
             static string GetBackupPathFromFileName(string filename)
             {
@@ -158,6 +92,85 @@ namespace MapleScreenshotBackup
 
                 return Path.Combine(year, month, day);
             }
+        }
+
+        public async Task<Result> StartBackupAsync(ProgressBar progress, bool canDelete = false)
+        {
+            using var disposer = await s_lock.LockAsync();
+
+            var defaultProgress = new
+            {
+                progress.Maximum,
+                progress.Step
+            };
+
+            progress.Style = ProgressBarStyle.Blocks;
+            progress.Value = 0;
+            progress.Maximum = ScreenshotsPathCache.Count;
+            progress.Step = 1;
+
+            try
+            {
+                var result = await Task.Run(() => ProcessBackup(progress, canDelete));
+                return result;
+            }
+            finally
+            {
+                progress.Value = 0;
+                progress.Maximum = defaultProgress.Maximum;
+                progress.Step = defaultProgress.Step;
+            }
+        }
+
+        private Result ProcessBackup(ProgressBar progress, bool canDelete)
+        {
+            var faild = new List<BackupException>();
+
+            foreach (var (source, dest) in ScreenshotsPathCache)
+            {
+                try
+                {
+                    if (source == dest)
+                    {
+                        faild.Add(new BackupException(source, "Source file path and Backup file path is same."));
+                        continue;
+                    }
+
+                    var screenshotDir = Path.GetDirectoryName(dest);
+                    _ = Directory.CreateDirectory(screenshotDir);
+
+                    var sourceFile = new FileInfo(source);
+                    if (File.Exists(dest))
+                    {
+                        var destFile = new FileInfo(dest);
+
+                        // Do not copy if file name is already exist but file size is diffrent
+                        // (Not same file)
+                        if (sourceFile.Length != destFile.Length)
+                        {
+                            faild.Add(new BackupException(source, $"File name [{dest}] is already exist and It is not same file."));
+                            continue;
+                        }
+                    }
+
+                    // Overwriting file
+                    sourceFile.CopyTo(dest, overwrite: true);
+                    if (canDelete)
+                    {
+                        sourceFile.Delete();
+                    }
+                }
+                catch (Exception e)
+                {
+                    faild.Add(new BackupException(source, $"Faild to backup screenshot [{source}]", e));
+                }
+                finally
+                {
+                    progress.BeginInvoke(new Action(() => progress.PerformStep()));
+                }
+            }
+
+            return new Result(faild.Count == 0, faild);
         }
     }
 }

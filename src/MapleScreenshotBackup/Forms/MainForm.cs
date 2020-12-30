@@ -80,11 +80,13 @@ namespace MapleScreenshotBackup.Forms
                 Config.Item.BackupDirectory = target.Text;
             }
 
+            var dirSameCheck = Config.Item.ScreenshotDirectory != Config.Item.BackupDirectory;
             var screenshotDirCheck = CheckDirectoryPath(Config.Item.ScreenshotDirectory);
             var backupDirCheck = CheckDirectoryPath(Config.Item.BackupDirectory);
 
             openBackupDirButton.Enabled = backupDirCheck;
-            screenshotsFindButton.Enabled = screenshotDirCheck && backupDirCheck;
+
+            screenshotsFindButton.Enabled = dirSameCheck && screenshotDirCheck && backupDirCheck;
             backupButton.Enabled = false;
         }
 
@@ -147,9 +149,6 @@ namespace MapleScreenshotBackup.Forms
 
                 _log.WriteLine($"Faild count: {result.Faild.Count}");
                 result.Faild.ForEach(s => _log.WriteLine(s, hide: true));
-
-                _log.WriteLine($"Skip count: {result.Skip.Count}");
-                result.Skip.ForEach(s => _log.WriteLine(s, hide: true));
             }
             catch (Exception ex)
             {
