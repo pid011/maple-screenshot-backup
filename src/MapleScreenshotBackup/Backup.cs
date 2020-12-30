@@ -157,7 +157,14 @@ namespace MapleScreenshotBackup
                     sourceFile.CopyTo(dest, overwrite: true);
                     if (canDelete)
                     {
-                        sourceFile.Delete();
+                        // Send to recycle bin
+                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                            source,
+                            Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                            Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
+
+                        // Delete permanently
+                        // sourceFile.Delete();
                     }
                 }
                 catch (Exception e)
