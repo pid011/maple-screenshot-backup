@@ -36,11 +36,11 @@ namespace MapleScreenshotBackup.Forms
             System.Windows.Forms.StatusStrip mainStatusStrip;
             System.Windows.Forms.Panel panel1;
             System.Windows.Forms.Panel panel2;
-            System.Windows.Forms.GroupBox backupOptionBox;
             this.exportLogButton = new System.Windows.Forms.ToolStripButton();
             this.newReleaseButton = new System.Windows.Forms.ToolStripButton();
             this.versionLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.githubLink = new System.Windows.Forms.ToolStripStatusLabel();
+            this.backupOptionBox = new System.Windows.Forms.GroupBox();
             this.doNotDeleteOption = new System.Windows.Forms.RadioButton();
             this.deletePermanentlyOption = new System.Windows.Forms.RadioButton();
             this.sendToRecycleBinOption = new System.Windows.Forms.RadioButton();
@@ -61,12 +61,11 @@ namespace MapleScreenshotBackup.Forms
             mainStatusStrip = new System.Windows.Forms.StatusStrip();
             panel1 = new System.Windows.Forms.Panel();
             panel2 = new System.Windows.Forms.Panel();
-            backupOptionBox = new System.Windows.Forms.GroupBox();
             mainToolStrip.SuspendLayout();
             mainStatusStrip.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
-            backupOptionBox.SuspendLayout();
+            this.backupOptionBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainToolStrip
@@ -174,7 +173,7 @@ namespace MapleScreenshotBackup.Forms
             // panel2
             // 
             panel2.BackColor = System.Drawing.SystemColors.Control;
-            panel2.Controls.Add(backupOptionBox);
+            panel2.Controls.Add(this.backupOptionBox);
             panel2.Controls.Add(label1);
             panel2.Controls.Add(this.screenshotDirInput);
             panel2.Controls.Add(this.screenshotDirSelectButton);
@@ -194,15 +193,15 @@ namespace MapleScreenshotBackup.Forms
             // 
             // backupOptionBox
             // 
-            backupOptionBox.Controls.Add(this.doNotDeleteOption);
-            backupOptionBox.Controls.Add(this.deletePermanentlyOption);
-            backupOptionBox.Controls.Add(this.sendToRecycleBinOption);
-            backupOptionBox.Location = new System.Drawing.Point(12, 302);
-            backupOptionBox.Name = "backupOptionBox";
-            backupOptionBox.Size = new System.Drawing.Size(371, 43);
-            backupOptionBox.TabIndex = 1;
-            backupOptionBox.TabStop = false;
-            backupOptionBox.Text = "Finished screenshot option";
+            this.backupOptionBox.Controls.Add(this.doNotDeleteOption);
+            this.backupOptionBox.Controls.Add(this.deletePermanentlyOption);
+            this.backupOptionBox.Controls.Add(this.sendToRecycleBinOption);
+            this.backupOptionBox.Location = new System.Drawing.Point(12, 302);
+            this.backupOptionBox.Name = "backupOptionBox";
+            this.backupOptionBox.Size = new System.Drawing.Size(371, 43);
+            this.backupOptionBox.TabIndex = 1;
+            this.backupOptionBox.TabStop = false;
+            this.backupOptionBox.Text = "Finished screenshot option";
             // 
             // doNotDeleteOption
             // 
@@ -366,7 +365,7 @@ namespace MapleScreenshotBackup.Forms
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            backupOptionBox.ResumeLayout(false);
+            this.backupOptionBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
