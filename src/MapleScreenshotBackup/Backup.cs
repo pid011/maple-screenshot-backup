@@ -94,7 +94,7 @@ namespace MapleScreenshotBackup
             }
         }
 
-        public async Task<Result> StartBackupAsync(ProgressBar progress, bool canDelete = false)
+        public async Task<Result> StartBackupAsync(ProgressBar progress, FinishedScreenshotOption option)
         {
             using var disposer = await s_lock.LockAsync();
 
@@ -111,7 +111,7 @@ namespace MapleScreenshotBackup
 
             try
             {
-                var result = await Task.Run(() => ProcessBackup(progress, canDelete));
+                var result = await Task.Run(() => ProcessBackup(progress, option));
                 return result;
             }
             finally
@@ -122,7 +122,7 @@ namespace MapleScreenshotBackup
             }
         }
 
-        private Result ProcessBackup(ProgressBar progress, bool canDelete)
+        private Result ProcessBackup(ProgressBar progress, FinishedScreenshotOption option)
         {
             var faild = new List<BackupException>();
 
@@ -155,16 +155,23 @@ namespace MapleScreenshotBackup
 
                     // Overwriting file
                     sourceFile.CopyTo(dest, overwrite: true);
-                    if (canDelete)
-                    {
-                        // Send to recycle bin
-                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
-                            source,
-                            Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
-                            Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
 
-                        // Delete permanently
-                        // sourceFile.Delete();
+                    switch (option)
+                    {
+                        case FinishedScreenshotOption.SendToRecycleBin:
+                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                                source,
+                                Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                                Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
+                            break;
+
+                        case FinishedScreenshotOption.DeletePermanently:
+                            sourceFile.Delete();
+                            break;
+
+                        case FinishedScreenshotOption.DoNotDelete:
+                        default:
+                            break;
                     }
                 }
                 catch (Exception e)

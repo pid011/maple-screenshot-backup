@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace MapleScreenshotBackup
 {
+    public enum FinishedScreenshotOption
+    {
+        SendToRecycleBin,
+        DeletePermanently,
+        DoNotDelete
+    }
+
     public class ConfigItem
     {
         [JsonPropertyName("screenshot")]
@@ -14,8 +21,8 @@ namespace MapleScreenshotBackup
         [JsonPropertyName("backup")]
         public string BackupDirectory { get; set; }
 
-        [JsonPropertyName("can_delete")]
-        public bool CanDelete { get; set; }
+        [JsonPropertyName("finished_screenshot_option")]
+        public FinishedScreenshotOption FinishedScreenshot { get; set; }
     }
 
     public static partial class Config
@@ -50,8 +57,8 @@ namespace MapleScreenshotBackup
                 {
                     ScreenshotDirectory = string.Empty,
                     BackupDirectory = string.Empty,
-                    CanDelete = true
-                }; ;
+                    FinishedScreenshot = FinishedScreenshotOption.SendToRecycleBin
+                };
                 await SaveAsync();
             }
             else

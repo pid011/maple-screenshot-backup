@@ -34,7 +34,21 @@ namespace MapleScreenshotBackup.Forms
             await Config.LoadAsync();
             screenshotDirInput.Text = Config.Item.ScreenshotDirectory;
             backupDirInput.Text = Config.Item.BackupDirectory;
-            canDeleteCheckBox.Checked = Config.Item.CanDelete;
+
+            switch (Config.Item.FinishedScreenshot)
+            {
+                case FinishedScreenshotOption.SendToRecycleBin:
+                    sendToRecycleBinOption.Checked = true;
+                    break;
+                case FinishedScreenshotOption.DeletePermanently:
+                    deletePermanentlyOption.Checked = true;
+                    break;
+                case FinishedScreenshotOption.DoNotDelete:
+                    doNotDeleteOption.Checked = true;
+                    break;
+                default:
+                    break;
+            }
 
             _log.WriteLine("Checking program versions...", hide: true);
             await CheckVersion();
@@ -138,13 +152,12 @@ namespace MapleScreenshotBackup.Forms
 
             try
             {
-                Config.Item.CanDelete = canDeleteCheckBox.Checked;
                 await Config.SaveAsync();
 
-                _log.WriteLine($"Delete completed files: {canDeleteCheckBox.Checked}");
+                _log.WriteLine($"Finished screenshot: {Config.Item.FinishedScreenshot}");
 
                 _log.WriteLine("Backup in progress...");
-                var result = await _backupProcess.StartBackupAsync(backupProgressBar, canDeleteCheckBox.Checked);
+                var result = await _backupProcess.StartBackupAsync(backupProgressBar, Config.Item.FinishedScreenshot);
                 _log.WriteLine("Done.");
 
                 _log.WriteLine($"Faild count: {result.Faild.Count}");
@@ -201,9 +214,25 @@ namespace MapleScreenshotBackup.Forms
             }
         }
 
-        private void OnCanDeleteCheckBoxCheckedChanged(object sender, EventArgs e)
+        private void OnBackupOptionChecked(object sender, EventArgs e)
         {
-            Config.Item.CanDelete = canDeleteCheckBox.Checked;
+            if (sender is not RadioButton)
+            {
+                return;
+            }
+
+            if (ReferenceEquals(sender, sendToRecycleBinOption))
+            {
+                Config.Item.FinishedScreenshot = FinishedScreenshotOption.SendToRecycleBin;
+            }
+            else if (ReferenceEquals(sender, deletePermanentlyOption))
+            {
+                Config.Item.FinishedScreenshot = FinishedScreenshotOption.DeletePermanently;
+            }
+            else if (ReferenceEquals(sender, doNotDeleteOption))
+            {
+                Config.Item.FinishedScreenshot = FinishedScreenshotOption.DoNotDelete;
+            }
         }
 
         private async Task CheckVersion()

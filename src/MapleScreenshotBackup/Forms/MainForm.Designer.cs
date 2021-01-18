@@ -36,15 +36,18 @@ namespace MapleScreenshotBackup.Forms
             System.Windows.Forms.StatusStrip mainStatusStrip;
             System.Windows.Forms.Panel panel1;
             System.Windows.Forms.Panel panel2;
+            System.Windows.Forms.GroupBox backupOptionBox;
             this.exportLogButton = new System.Windows.Forms.ToolStripButton();
             this.newReleaseButton = new System.Windows.Forms.ToolStripButton();
             this.versionLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.githubLink = new System.Windows.Forms.ToolStripStatusLabel();
+            this.doNotDeleteOption = new System.Windows.Forms.RadioButton();
+            this.deletePermanentlyOption = new System.Windows.Forms.RadioButton();
+            this.sendToRecycleBinOption = new System.Windows.Forms.RadioButton();
             this.screenshotDirInput = new System.Windows.Forms.TextBox();
             this.screenshotDirSelectButton = new System.Windows.Forms.Button();
             this.backupDirInput = new System.Windows.Forms.TextBox();
             this.backupDirSelectButton = new System.Windows.Forms.Button();
-            this.canDeleteCheckBox = new System.Windows.Forms.CheckBox();
             this.screenshotsFindButton = new System.Windows.Forms.Button();
             this.openBackupDirButton = new System.Windows.Forms.Button();
             this.backupButton = new System.Windows.Forms.Button();
@@ -58,10 +61,12 @@ namespace MapleScreenshotBackup.Forms
             mainStatusStrip = new System.Windows.Forms.StatusStrip();
             panel1 = new System.Windows.Forms.Panel();
             panel2 = new System.Windows.Forms.Panel();
+            backupOptionBox = new System.Windows.Forms.GroupBox();
             mainToolStrip.SuspendLayout();
             mainStatusStrip.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
+            backupOptionBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainToolStrip
@@ -169,13 +174,13 @@ namespace MapleScreenshotBackup.Forms
             // panel2
             // 
             panel2.BackColor = System.Drawing.SystemColors.Control;
+            panel2.Controls.Add(backupOptionBox);
             panel2.Controls.Add(label1);
             panel2.Controls.Add(this.screenshotDirInput);
             panel2.Controls.Add(this.screenshotDirSelectButton);
             panel2.Controls.Add(label2);
             panel2.Controls.Add(this.backupDirInput);
             panel2.Controls.Add(this.backupDirSelectButton);
-            panel2.Controls.Add(this.canDeleteCheckBox);
             panel2.Controls.Add(this.screenshotsFindButton);
             panel2.Controls.Add(this.openBackupDirButton);
             panel2.Controls.Add(this.backupButton);
@@ -186,6 +191,51 @@ namespace MapleScreenshotBackup.Forms
             panel2.Name = "panel2";
             panel2.Size = new System.Drawing.Size(668, 358);
             panel2.TabIndex = 1;
+            // 
+            // backupOptionBox
+            // 
+            backupOptionBox.Controls.Add(this.doNotDeleteOption);
+            backupOptionBox.Controls.Add(this.deletePermanentlyOption);
+            backupOptionBox.Controls.Add(this.sendToRecycleBinOption);
+            backupOptionBox.Location = new System.Drawing.Point(12, 302);
+            backupOptionBox.Name = "backupOptionBox";
+            backupOptionBox.Size = new System.Drawing.Size(371, 43);
+            backupOptionBox.TabIndex = 1;
+            backupOptionBox.TabStop = false;
+            backupOptionBox.Text = "Finished screenshot option";
+            // 
+            // doNotDeleteOption
+            // 
+            this.doNotDeleteOption.Location = new System.Drawing.Point(269, 17);
+            this.doNotDeleteOption.Name = "doNotDeleteOption";
+            this.doNotDeleteOption.Size = new System.Drawing.Size(100, 20);
+            this.doNotDeleteOption.TabIndex = 0;
+            this.doNotDeleteOption.TabStop = true;
+            this.doNotDeleteOption.Text = "Do not delete";
+            this.doNotDeleteOption.UseVisualStyleBackColor = true;
+            this.doNotDeleteOption.CheckedChanged += new System.EventHandler(this.OnBackupOptionChecked);
+            // 
+            // deletePermanentlyOption
+            // 
+            this.deletePermanentlyOption.Location = new System.Drawing.Point(133, 17);
+            this.deletePermanentlyOption.Name = "deletePermanentlyOption";
+            this.deletePermanentlyOption.Size = new System.Drawing.Size(130, 20);
+            this.deletePermanentlyOption.TabIndex = 0;
+            this.deletePermanentlyOption.TabStop = true;
+            this.deletePermanentlyOption.Text = "Delete permanently";
+            this.deletePermanentlyOption.UseVisualStyleBackColor = true;
+            this.deletePermanentlyOption.CheckedChanged += new System.EventHandler(this.OnBackupOptionChecked);
+            // 
+            // sendToRecycleBinOption
+            // 
+            this.sendToRecycleBinOption.Location = new System.Drawing.Point(6, 17);
+            this.sendToRecycleBinOption.Name = "sendToRecycleBinOption";
+            this.sendToRecycleBinOption.Size = new System.Drawing.Size(130, 20);
+            this.sendToRecycleBinOption.TabIndex = 0;
+            this.sendToRecycleBinOption.TabStop = true;
+            this.sendToRecycleBinOption.Text = "Send to recycle bin";
+            this.sendToRecycleBinOption.UseVisualStyleBackColor = true;
+            this.sendToRecycleBinOption.CheckedChanged += new System.EventHandler(this.OnBackupOptionChecked);
             // 
             // screenshotDirInput
             // 
@@ -232,17 +282,6 @@ namespace MapleScreenshotBackup.Forms
             this.backupDirSelectButton.Text = "Open";
             this.backupDirSelectButton.UseVisualStyleBackColor = true;
             this.backupDirSelectButton.Click += new System.EventHandler(this.OnDirectorySelectButtonClicked);
-            // 
-            // canDeleteCheckBox
-            // 
-            this.canDeleteCheckBox.AutoSize = true;
-            this.canDeleteCheckBox.Location = new System.Drawing.Point(12, 279);
-            this.canDeleteCheckBox.Name = "canDeleteCheckBox";
-            this.canDeleteCheckBox.Size = new System.Drawing.Size(143, 19);
-            this.canDeleteCheckBox.TabIndex = 0;
-            this.canDeleteCheckBox.Text = "Delete completed files";
-            this.canDeleteCheckBox.UseVisualStyleBackColor = true;
-            this.canDeleteCheckBox.CheckedChanged += new System.EventHandler(this.OnCanDeleteCheckBoxCheckedChanged);
             // 
             // screenshotsFindButton
             // 
@@ -327,6 +366,7 @@ namespace MapleScreenshotBackup.Forms
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
+            backupOptionBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -342,12 +382,15 @@ namespace MapleScreenshotBackup.Forms
         private System.Windows.Forms.ProgressBar backupProgressBar;
         private System.Windows.Forms.Button screenshotsFindButton;
         private System.Windows.Forms.ListBox backupLog;
-        private System.Windows.Forms.CheckBox canDeleteCheckBox;
         private System.Windows.Forms.ToolStripButton newReleaseButton;
         private System.Windows.Forms.ToolStripStatusLabel versionLabel;
         private System.Windows.Forms.ToolStripStatusLabel githubLink;
         private System.Windows.Forms.Button openBackupDirButton;
         private System.Windows.Forms.FolderBrowserDialog dirSelectDialog;
         private System.Windows.Forms.SaveFileDialog saveLogDialog;
+        private System.Windows.Forms.GroupBox backupOptionBox;
+        private System.Windows.Forms.RadioButton sendToRecycleBinOption;
+        private System.Windows.Forms.RadioButton doNotDeleteOption;
+        private System.Windows.Forms.RadioButton deletePermanentlyOption;
     }
 }
