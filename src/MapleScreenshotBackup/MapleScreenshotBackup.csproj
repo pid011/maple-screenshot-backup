@@ -1,12 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <DebugType>embedded</DebugType>
-    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
 
     <Authors>pid011</Authors>
     <PackageProjectUrl>https://github.com/pid011/maple-screenshot-backup</PackageProjectUrl>
