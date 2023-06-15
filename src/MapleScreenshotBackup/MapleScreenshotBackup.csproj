@@ -2,18 +2,21 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <DebugType>embedded</DebugType>
-    <Version>1.0.8</Version>
+    <Version>1.1.0</Version>
 
     <Authors>pid011</Authors>
     <PackageProjectUrl>https://github.com/pid011/maple-screenshot-backup</PackageProjectUrl>
     <RepositoryUrl>https://github.com/pid011/maple-screenshot-backup</RepositoryUrl>
     <NeutralLanguage>en</NeutralLanguage>
-    <Copyright>Copyright (c) 2020 pid011</Copyright>
+    <Copyright>Copyright (c) 2022 pid011</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <Title>메이플스토리 스크린샷 백업</Title>
+    <PackageIcon>icon.ico</PackageIcon>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +38,13 @@
     <None Include="..\..\..\kms-guild-extractor\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="icon.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
