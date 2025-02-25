@@ -1,36 +1,26 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+namespace MapleScreenshotBackup;
 
-namespace MapleScreenshotBackup
+public sealed class AsyncLock
 {
-    public sealed class AsyncLock
+    private readonly SemaphoreSlim _semaphore = new(1, 1);
+
+    public async Task<IDisposable> LockAsync()
     {
-        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+        await _semaphore.WaitAsync();
+        return new Handler(_semaphore);
+    }
 
-        public async Task<IDisposable> LockAsync()
+    private sealed class Handler(SemaphoreSlim semaphore) : IDisposable
+    {
+        private readonly SemaphoreSlim _semaphore = semaphore;
+        private bool _disposed;
+
+        public void Dispose()
         {
-            await _semaphore.WaitAsync();
-            return new Handler(_semaphore);
-        }
-
-        private sealed class Handler : IDisposable
-        {
-            private readonly SemaphoreSlim _semaphore;
-            private bool _disposed = false;
-
-            public Handler(SemaphoreSlim semaphore)
+            if (!_disposed)
             {
-                _semaphore = semaphore;
-            }
-
-            public void Dispose()
-            {
-                if (!_disposed)
-                {
-                    _semaphore.Release();
-                    _disposed = true;
-                }
+                _semaphore.Release();
+                _disposed = true;
             }
         }
     }

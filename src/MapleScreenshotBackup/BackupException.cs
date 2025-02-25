@@ -1,36 +1,27 @@
-using System;
-using System.Runtime.Serialization;
+namespace MapleScreenshotBackup;
 
-namespace MapleScreenshotBackup
+[Serializable]
+public class BackupException : Exception
 {
-    [Serializable]
-    public class BackupException : Exception
+    public BackupException(string faildFileName)
     {
-        public string FileName { get; }
-
-        public BackupException(string faildFileName)
-        {
-            FileName = faildFileName;
-        }
-
-        public BackupException(string faildFileName, Exception inner) : base(null, inner)
-        {
-            FileName = faildFileName;
-        }
-
-        public BackupException(string faildFileName, string message) : base(message)
-        {
-            FileName = faildFileName;
-        }
-
-        public BackupException(string faildFileName, string message, Exception inner) : base(message, inner)
-        {
-            FileName = faildFileName;
-        }
-
-        protected BackupException(string faildFileName, SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-            FileName = faildFileName;
-        }
+        FileName = faildFileName;
     }
+
+    public BackupException(string faildFileName, Exception inner) : base(null, inner)
+    {
+        FileName = faildFileName;
+    }
+
+    public BackupException(string faildFileName, string message) : base(message)
+    {
+        FileName = faildFileName;
+    }
+
+    public BackupException(string faildFileName, string message, Exception inner) : base(message, inner)
+    {
+        FileName = faildFileName;
+    }
+
+    public string FileName { get; }
 }

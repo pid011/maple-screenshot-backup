@@ -1,51 +1,40 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
-    <DebugType>embedded</DebugType>
-    <Version>1.1.0</Version>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net9.0-windows</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>false</SelfContained>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <AssemblyName>MapleScreenshotBackup</AssemblyName>
+        <RootNamespace>MapleScreenshotBackup</RootNamespace>
+        <Authors>pid011</Authors>
+        <PackageProjectUrl>https://github.com/pid011/maple-screenshot-backup</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/pid011/maple-screenshot-backup</RepositoryUrl>
+        <NeutralLanguage>en</NeutralLanguage>
+        <Copyright>Copyright (c) 2022 pid011</Copyright>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
+        <Title>메이플스토리 스크린샷 백업</Title>
+        <PackageIcon>icon.ico</PackageIcon>
+        <SignAssembly>False</SignAssembly>
+        <Version>2.0.0</Version>
+    </PropertyGroup>
 
-    <Authors>pid011</Authors>
-    <PackageProjectUrl>https://github.com/pid011/maple-screenshot-backup</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/pid011/maple-screenshot-backup</RepositoryUrl>
-    <NeutralLanguage>en</NeutralLanguage>
-    <Copyright>Copyright (c) 2022 pid011</Copyright>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
-    <Title>메이플스토리 스크린샷 백업</Title>
-    <PackageIcon>icon.ico</PackageIcon>
-    <SignAssembly>False</SignAssembly>
-  </PropertyGroup>
+    <ItemGroup>
+        <None Include="..\..\..\kms-guild-extractor\LICENSE" Link="LICENSE">
+            <Pack>True</Pack>
+        </None>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\..\kms-guild-extractor\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="icon.ico">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <None Update="icon.ico">
+            <PackagePath>\</PackagePath>
+            <Pack>True</Pack>
+        </None>
+    </ItemGroup>
 
 </Project>
